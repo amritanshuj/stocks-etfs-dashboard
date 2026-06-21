@@ -167,6 +167,30 @@
     /* reason column: full-width block, not a flex row */
     .atable.rej td:nth-child(3){display:block!important;color:var(--mut);font-size:12.3px;line-height:1.55;margin-top:8px}
     .atable.rej td:nth-child(3)::before{content:"Why excluded";display:block;color:var(--mut2);font-family:var(--mono);font-size:10px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:3px}
+
+    /* main rankings table → stacked cards (kills the 1080px min-width scroll) */
+    .tablewrap{border:none;background:none;border-radius:0;overflow:visible}
+    .scroll{overflow:visible}
+    .scroll table{min-width:0;width:100%}
+    .scroll thead{display:none}
+    .scroll tbody{display:block}
+    .scroll td{padding:0!important;border:none!important;text-align:left!important;white-space:normal!important}
+    /* each stock = a card laid out as a 4-col grid (header fields span all 4; 12 score pills fill the grid) */
+    .scroll tr{display:grid!important;grid-template-columns:repeat(4,1fr);gap:7px 8px;align-items:start;
+      background:var(--card);border:1px solid var(--line);border-radius:13px;padding:14px 15px;margin:0 0 11px}
+    .scroll td.rk,.scroll td.namecell,.scroll td.typecell,.scroll td.px,.scroll td.scorecell{grid-column:1 / -1}
+    .scroll td.rk{font-size:11px;color:var(--mut2);font-family:var(--mono)}
+    .scroll td.namecell{margin-top:-4px} .scroll td.namecell .tkcell{font-size:18px} .scroll td.namecell .nmcell{font-size:11.5px;color:var(--mut)}
+    .scroll td.typecell{display:flex;align-items:center;gap:8px} .scroll td.typecell .grp{font-size:11px;color:var(--mut)}
+    .scroll td.px{display:flex;justify-content:space-between;align-items:baseline;font-size:14px}
+    .scroll td.px::before{content:"Price";color:var(--mut2);font-family:var(--mono);font-size:10px;letter-spacing:.5px;text-transform:uppercase}
+    .scroll td.scorecell{display:flex;align-items:center;gap:10px;padding-top:10px!important;border-top:1px solid var(--line)!important}
+    .scroll td.scorecell .scorebox{justify-content:flex-start;gap:10px} .scroll td.scorecell .scbar{width:90px}
+    .scroll td.scorecell::before{content:"Overall";color:var(--mut2);font-family:var(--mono);font-size:10px;letter-spacing:.5px;text-transform:uppercase;margin-right:auto}
+    .scroll td.catcell{display:flex;flex-direction:column;align-items:center;gap:3px;
+      background:var(--bg2);border-radius:8px;padding:7px 3px!important}
+    .scroll td.catcell::before{content:attr(data-cat);color:var(--mut2);font-family:var(--mono);font-size:8.5px;letter-spacing:.2px}
+    .scroll td.catcell .cs{min-width:0;padding:1px 5px;font-size:12px}
   }
   @media(max-width:430px){
     .wrap{padding:0 13px}
@@ -709,13 +733,13 @@ function render(){
   $('#tbody').innerHTML=rows.map(s=>{
     const sc=s.score;
     const catcells=CATS.map(c=>{const v=s.cats[c];const val=v&&v.score!=null?v.score:null;
-      return `<td><span class="cs ${csClass(val)}">${val!=null?val.toFixed(1):'–'}</span></td>`;}).join('');
+      return `<td class="catcell" data-cat="${CATABBR[c]}"><span class="cs ${csClass(val)}">${val!=null?val.toFixed(1):'–'}</span></td>`;}).join('');
     return `<tr onclick="location.href='${esc(s.file)}'">
       <td class="l rk">${s._rank}</td>
-      <td class="l"><div class="tkcell">${esc(s.ticker)}</div><div class="nmcell">${esc(s.name)}</div></td>
-      <td><span class="tag tag-${s.type.toLowerCase()}">${s.type}</span><div class="grp">${esc(s.group)}</div></td>
+      <td class="l namecell"><div class="tkcell">${esc(s.ticker)}</div><div class="nmcell">${esc(s.name)}</div></td>
+      <td class="typecell"><span class="tag tag-${s.type.toLowerCase()}">${s.type}</span><div class="grp">${esc(s.group)}</div></td>
       <td class="px">$${esc(s.price)}</td>
-      <td><div class="scorebox"><span class="scorenum" style="color:${scoreColor(sc)}">${sc.toFixed(1)}</span>
+      <td class="scorecell"><div class="scorebox"><span class="scorenum" style="color:${scoreColor(sc)}">${sc.toFixed(1)}</span>
         <span class="scbar"><i style="width:${sc*10}%;background:${scoreColor(sc)}"></i></span></div></td>
       ${catcells}
     </tr>`;

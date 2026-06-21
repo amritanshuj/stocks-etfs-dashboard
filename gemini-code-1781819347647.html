@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equity Research Report: Harmonic Inc. (HLIT)</title>
+    <style>
+        :root {
+            --bg-canvas: #f8fafc;
+            --surface-card: #ffffff;
+            --text-main: #0f172a;
+            --text-secondary: #475569;
+            --primary-accent: #0284c7; /* Networking & Communications Cyan Blue */
+            --primary-light: #f0f9ff;
+            --color-success: #16a34a;
+            --color-success-bg: #f0fdf4;
+            --color-warning: #d97706;
+            --color-warning-bg: #fefce8;
+            --color-danger: #dc2626;
+            --color-danger-bg: #fef2f2;
+            --border-muted: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-canvas);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 16px;
+        }
+
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+        }
+
+        /* Executive Header Dashboard */
+        .header-dashboard {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #ffffff;
+            border-radius: 16px;
+            padding: 28px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-meta h1 {
+            margin: 0 0 6px 0;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+
+        .ticker-badge {
+            background-color: var(--primary-accent);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .date-badge {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .price-container {
+            font-size: 36px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 12px 0 0 0;
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .currency-label {
+            font-size: 16px;
+            font-weight: 400;
+            color: #94a3b8;
+        }
+
+        .gauge-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .gauge-svg {
+            width: 130px;
+            height: 130px;
+        }
+
+        .gauge-track {
+            fill: none;
+            stroke: #334155;
+            stroke-width: 10;
+        }
+
+        .gauge-fill {
+            fill: none;
+            stroke: var(--color-warning);
+            stroke-width: 10;
+            stroke-dasharray: 283;
+            stroke-dashoffset: 79.24; /* Reflects 7.2/10 Score */
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: center;
+        }
+
+        .gauge-value {
+            font-size: 24px;
+            font-weight: 800;
+            fill: #ffffff;
+        }
+
+        .gauge-caption {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        /* Infographic SVG Charts Grid */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        @media(min-width: 768px) {
+            .charts-row {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .chart-card {
+            background-color: var(--surface-card);
+            border: 1px solid var(--border-muted);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .chart-card h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin: 0 0 16px 0;
+            text-align: center;
+            width: 100%;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 8px;
+        }
+
+        /* Scorecard Category Layout */
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        @media(min-width: 768px) {
+            .matrix-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .category-card {
+            background-color: var(--surface-card);
+            border: 1px solid var(--border-muted);
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .category-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        .score-badge {
+            font-size: 13px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        .badge-green { color: var(--color-success); background-color: var(--color-success-bg); }
+        .badge-yellow { color: var(--color-warning); background-color: var(--color-warning-bg); }
+        .badge-red { color: var(--color-danger); background-color: var(--color-danger-bg); }
+
+        .bar-track {
+            background-color: #f1f5f9;
+            height: 8px;
+            border-radius: 4px;
+            width: 100%;
+            margin-bottom: 14px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .fill-green { background-color: var(--color-success); }
+        .fill-yellow { background-color: var(--color-warning); }
+        .fill-red { background-color: var(--color-danger); }
+
+        .metric-definition {
+            font-style: italic;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .data-box {
+            background-color: #f8fafc;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            font-family: Menlo, Monaco, Consolas, monospace;
+            margin-bottom: 12px;
+            color: #334155;
+            border-left: 3px solid #64748b;
+        }
+
+        .analysis-narrative {
+            font-size: 14.5px;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            flex-grow: 1;
+        }
+
+        /* Advanced Concept Callouts */
+        .plain-english-callout {
+            background-color: var(--primary-light);
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 13.5px;
+            color: #1e40af;
+        }
+
+        .plain-english-callout strong {
+            color: var(--primary-accent);
+        }
+
+        /* Summary Banner Component */
+        .summary-banner {
+            background-color: var(--color-warning-bg);
+            border: 1px solid #fef08a;
+            border-radius: 14px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .summary-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #854d0e;
+            margin-bottom: 6px;
+        }
+
+        .summary-desc {
+            font-size: 16px;
+            color: var(--color-warning);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .weighting-breakdown {
+            margin: 0;
+            font-size: 13.5px;
+            color: #713f12;
+            max-width: 850px;
+            display: inline-block;
+        }
+
+        /* Bull vs Bear Two-Column Layout */
+        .perspectives-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        @media(min-width: 768px) {
+            .perspectives-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .perspective-pane {
+            background-color: var(--surface-card);
+            border: 1px solid var(--border-muted);
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .perspective-pane.bullish { border-top: 4px solid var(--color-success); }
+        .perspective-pane.bearish { border-top: 4px solid var(--color-danger); }
+
+        .perspective-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .perspective-list {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .perspective-list li {
+            margin-bottom: 12px;
+            font-size: 14.5px;
+            color: var(--text-main);
+        }
+
+        /* Institutional Disclaimer Styling */
+        .institutional-disclaimer {
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 14px;
+            padding: 24px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 48px;
+        }
+
+        .disclaimer-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-top: 0;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="header-dashboard">
+        <div class="header-meta">
+            <h1>Harmonic Inc. <span class="ticker-badge">NASDAQ: HLIT</span></h1>
+            <div class="date-badge">Educational Context: Mid-2026 | Industry Cohort: Broadband Communication Systems & Software</div>
+            <div class="price-container">$15.08 <span class="currency-label">USD</span></div>
+        </div>
+        <div class="gauge-wrapper">
+            <svg class="gauge-svg" viewBox="0 0 100 100">
+                <circle class="gauge-track" cx="50" cy="50" r="45"></circle>
+                <circle class="gauge-fill" cx="50" cy="50" r="45"></circle>
+                <text class="gauge-value" cx="50" cy="56" text-anchor="middle">7.2</text>
+            </svg>
+            <div class="gauge-caption">Fundamentals Snapshot<br><span style="color:var(--color-warning);">Solid / Transitional Engine</span></div>
+        </div>
+    </header>
+
+    <section class="charts-row">
+        <div class="chart-card">
+            <h3>Annual Broadband Revenues ($ Millions)</h3>
+            <svg width="240" height="150" viewBox="0 0 240 150">
+                <line x1="35" y1="110" x2="220" y2="110" stroke="#cbd5e1" stroke-width="1"/>
+                <line x1="35" y1="70" x2="220" y2="70" stroke="#f1f5f9" stroke-dasharray="2" stroke-width="1"/>
+                <line x1="35" y1="30" x2="220" y2="30" stroke="#f1f5f9" stroke-dasharray="2" stroke-width="1"/>
+                
+                <rect x="55" y="85" width="22" height="25" fill="#94a3b8"/>
+                <text x="66" y="125" font-size="10" text-anchor="middle" fill="#64748b">2024</text>
+                <text x="66" y="78" font-size="9" text-anchor="middle" font-weight="600" fill="#475569">$242M</text>
+                
+                <rect x="110" y="73" width="22" height="37" fill="#0284c7"/>
+                <text x="121" y="125" font-size="10" text-anchor="middle" fill="#64748b">2025</text>
+                <text x="121" y="66" font-size="9" text-anchor="middle" font-weight="600" fill="#0284c7">$360.5M</text>
+                
+                <rect x="165" y="60" width="22" height="50" fill="#0369a1"/>
+                <text x="176" y="125" font-size="10" text-anchor="middle" fill="#64748b">2026E</text>
+                <text x="176" y="53" font-size="9" text-anchor="middle" font-weight="600" fill="#0369a1">$485M</text>
+            </svg>
+        </div>
+
+        <div class="chart-card">
+            <h3>Transitional Profit Margin Targets</h3>
+            <svg width="240" height="150" viewBox="0 0 240 150">
+                <rect x="45" y="40" width="40" height="80" fill="#16a34a" rx="2"/>
+                <text x="65" y="80" font-size="11" font-weight="700" fill="white" text-anchor="middle">50.7%</text>
+                <text x="65" y="135" font-size="9.5" text-anchor="middle" fill="#475569" font-weight="600">Gross Margin</text>
+                
+                <rect x="145" y="86" width="40" height="34" fill="#ca8a04" rx="2"/>
+                <text x="165" y="105" font-size="11" font-weight="700" fill="white" text-anchor="middle">19.4%</text>
+                <text x="165" y="135" font-size="9.5" text-anchor="middle" fill="#475569" font-weight="600">Operating Mgn</text>
+                
+                <line x1="20" y1="120" x2="220" y2="120" stroke="#475569" stroke-width="1"/>
+            </svg>
+        </div>
+
+        <div class="chart-card">
+            <h3>Forward Price-to-Earnings (P/E) Multiples</h3>
+            <svg width="240" height="150" viewBox="0 0 240 150">
+                <line x1="75" y1="20" x2="75" y2="120" stroke="#475569" stroke-width="1.5"/>
+                
+                <text x="65" y="45" font-size="10" text-anchor="end" font-weight="600">HLIT (Fwd)</text>
+                <rect x="75" y="35" width="80" height="14" fill="#0284c7"/>
+                <text x="160" y="46" font-size="10" font-weight="700" fill="#0284c7">24.3x</text>
+
+                <text x="65" y="75" font-size="10" text-anchor="end">CSCO</text>
+                <rect x="75" y="65" width="98" height="14" fill="#94a3b8"/>
+                <text x="180" y="76" font-size="10" fill="#475569">29.6x</text>
+
+                <text x="65" y="105" font-size="10" text-anchor="end">Peer Avg</text>
+                <rect x="75" y="95" width="110" height="14" fill="#94a3b8"/>
+                <text x="190" y="106" font-size="10" fill="#475569">33.1x</text>
+            </svg>
+        </div>
+    </section>
+
+    <main class="matrix-grid">
+
+        <div class="category-card">
+            <div>
+                <div class="category-header">
+                    <h3 class="category-name">1. Business Model & Moat</h3>
+                    <span class="score-badge badge-green">8.5 / 10</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill fill-green" style="width: 85%;"></div></div>
+                <div class="metric-definition">Measures the company's core operations, monetization streams, and structural competitive barriers.</div>
+                <div class="data-box">Core Product: cOS™ Broadband Software Engine | Deployment Scale: 150+ customers serving 45.7M Modems</div>
+            </div>
+            <div class="analysis-narrative">
+                Harmonic specializes in software-based virtualized broadband networks and high-speed access delivery structures. Following the mid-2026 completion of its Video division sale to MediaKind for $145 million in cash, the company has completed a corporate transformation into a pure-play, higher-margin broadband access developer. Its market-leading cOS virtualization engine embeds directly into cable operators' infrastructure to scale DOCSIS 4.0 and multi-gigabit fiber connections, creating a deep competitive moat driven by high long-term technical customer switching costs.
+            </div>
+        </div>
+
+        <div class="category-card">
+            <div>
+                <div class="category-header">
+                    <h3 class="category-name">2. Valuation Multiples</h3>
+                    <span class="score-badge badge-yellow">5.5 / 10</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill fill-yellow" style="width: 55%;"></div></div>
+                <div class="metric-definition">Measures equity price relative to fundamentals like net earnings, revenues, and historical sector trends.</div>
+                <div class="data-box">Trailing GAAP P/E: ~188.3x (Distorted) | Forward Non-GAAP P/E: ~22.5x - 26.5x | Trailing Price/Sales: ~4.18x</div>
+            </div>
+            <div class="analysis-narrative">
+                Harmonic's trailing GAAP multiples sit at an elevated premium, heavily distorted by restructuring expenses, discontinued video segment calculations, and transitional overhead blocks. However, evaluating the business on a forward-looking consensus normalized perspective, its valuation trades at a moderate discount relative to traditional networking peers (like Cisco at 29.6x normalized earnings). The current pricing architecture points to a compressed valuation compared to specialized infrastructure software providers, pricing in steady top-line margin expansion.
+            </div>
+            <div class="plain-english-callout">
+                📘 <strong>In Plain English:</strong> The <strong>Forward Price-to-Earnings (P/E) Ratio</strong> shows how much an investor pays today for every dollar of estimated profit next year. A forward P/E of 24.3x means that for every $1.00 of projected near-term net income, investors are paying $24.30 upfront. High trailing multiples often occur when past earnings drop temporarily during corporate restructuring phases, making forward projections a clearer guide.
+            </div>
+        </div>
+
+        <div class="category-card">
+            <div>
+                <div class="category-header">
+                    <h3 class="category-name">3. Profitability Profile</h3>
+                    <span class="score-badge badge-yellow">6.5 / 10</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill fill-yellow" style="width: 65%;"></div></div>
+                <div class="metric-definition">Evaluates structural corporate expense control, bottom-line conversion rates, and capital efficiency returns.</div>
+                <div class="data-box">Non-GAAP Gross Margin Guidance: 50.0% - 51.5% | Guided Non-GAAP Operating Profit: $87M - $101M | Normalized ROE: ~8.37%</div>
+            </div>
+            <div class="analysis-narrative">
+                Harmonic exhibits an improving profit structure driven by its transition toward software delivery models. Baseline product economics remain healthy, with gross margins guided into the low-50s as higher-margin software licenses and technical support services scale up. Full-year non-GAAP operating margin targets are positioned to expand near 19.4% at the midpoint, though net returns are currently balanced by stranded legacy video costs that must be phased out over subsequent quarters.
+            </div>
+            <div class="plain-english-callout">
+                📘 <strong>In Plain English:</strong> <strong>Operating Margin</strong> reveals the percentage of profit left over after paying for direct production costs like software hosting, plus regular corporate overhead. A 19.4% operating margin means that for every $100 of broadband revenue collected, Harmonic keeps roughly $19.40 in clear operational profit before accounting for corporate income taxes and debt interest.
+            </div>
+        </div>
+
+        <div class="category-card">
+            <div>
+                <div class="category-header">
+                    <h3 class="category-name">4. Growth Velocity</h3>
+                    <span class="score-badge badge-green">8.5 / 10</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill fill-green" style="width: 85%;"></div></div>
+                . <div class="metric-definition">Tracks historical expansion speed alongside consensus future top-line and bottom-line growth velocity.</div>
+                <div class="data-box">Q1 2026 Broadband Rev Growth: +43% YoY | Raised FY26 Rev Guidance: $475M - $495M | Record Backlog: $582.1M (+87% YoY)</div>
+            </div>
+            <div class="analysis-narrative">
+                Top-line growth has accelerated significantly, supported by structural infrastructure transitions across global cable providers. While aggregate multi-year trailing revenue averages look uneven due to legacy asset drag, the standalone Broadband segment exhibits high velocity, climbing 43% year-over-year to $121.7 million in Q1 2026. Long-term forward visibility remains robust, with record active order backlogs expanding 87% to $582.1 million.
+            </div>
+        </div>
+
+        <div class="category-card">
+            <div>
+                <div class="category-header">
+                    <h3 class="category-name">5. Balance Sheet Strength</h3>
+                    <span class="score-badge badge-green">8.5 / 10</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill fill-green" style="width: 85%;"></div></div>
+                <div class="metric-definition">Measures capital structure protection, liquidity safety margins, and structural capacity to meet commitments.</div>
+                <div class="data-box">Q1 Corporate Cash: $109M | Incoming Divestiture Cash: $145M | Long-Term Debt: ~$111.3M | Current Ratio: 2.26x</div>
+            </div>
+            <div class="analysis-narrative">
+                The corporate balance sheet exhibits conservative leverage and strong structural health. Traditional debt liabilities remain well-contained relative to assets with a debt-to-equity ratio of 31.4%, and an interest coverage ratio above 8.5x ensures safe debt service capability. Capital flexibility is positioned to expand substantially following the influx of $145 million in all-cash proceeds from the finalized Video unit divestiture, creating a robust net-cash buffer.
+            </div>
+        </div>
+
+        <div class="category-card">
+            <div>
+                <div class="category-header">
+                    <h3 class="category-name">6. Cash Flow Dynamics</h3>
+                    <span class="score-badge badge-green">8.0 / 10</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill fill-green" style="width: 80%;"></div></div>
+                <div class="metric-definition">Determines the cash generated by standard enterprise operations after accounting for physical property additions.</div>
+                <div class="data-box">Q1 2026 Operating Cash Flow: $31.0M | Q1 Free Cash Flow: $30.3M | FY25 FCF Generation: $96.9M</div>
+            </div>
+            <div class="analysis-narrative">
+                Reported cash metrics demonstrate consistent operational conversion that tracks ahead of baseline GAAP net income. Because Harmonic's virtualized platform routes hardware components through a capital-light software delivery design, physical equipment expenditures remain low ($1.4M in Q1). Surplus operational cash generation tracks effectively, reflecting stable customer payment collection performance.
+            </div>
+            <div class="plain-english-callout">
+                📘 <strong>In Plain English:</strong> <strong>Free Cash Flow (FCF)</strong> is the actual physical cash a business retains after funding daily operations and purchasing physical equipment updates. High free cash flow indicates that the company generates a genuine cash surplus, which can be deployed to retire equity shares or fund expansions without relying on outside credit channels.
+            </div>
+        </div>
+
+        <div class="category-card">
+            <div>
+                <div class="category-header">
+                    <h3 class="category-name">7. Dividend Profile</h3>
+                    <span class="score-badge badge-red">0.0 / 10</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill fill-red" style="width: 0%;"></div></div>
+                <div class="metric-definition">Evaluates structural cash distribution yield payouts and stability records returned directly back to capital providers.</div>
+                <div class="data-box">Annual Dividend Yield: 0.0% | Payout Allocation: 0.0% | Distribution History: None</div>
+            </div>
+            <div class="analysis-narrative">
+                Harmonic does not pay a cash dividend. Given the company's focus on technological transitions and the capital required to scale its virtualized broadband footprint, capital allocation strategies prioritize aggressive internal product R&D and independent share buybacks over direct distributions.
+            </div>
+        </div>
+
+        <div class="category-card">
+            <div>
+                <div class="category-header">
+                    <h3 class="category-name">8. Management Execution</h3>
+                    <span class="score-badge badge-green">8.0 / 10</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill fill-green" style="width: 80%;"></div></div>
+                <div class="metric-definition">Tracks management's historical pivot execution, acquisition integration, and operational capital design.</div>
+                <div class="data-box">CEO: Nimrod Ben-Natan | Q1 Share Repurchases: $43.0M (4.2M shares retired) | Institutional Base: ~87.1%</div>
+            </div>
+            <div class="analysis-narrative">
+                Executive leadership under CEO Nimrod Ben-Natan has successfully executed a major strategic pivot, completing the sale of its legacy video segment to streamline operations around high-margin broadband automation. Management's capital deployment framework is shareholder-aligned, aggressively allocating $43 million in the first quarter alone to repurchase and retire undervalued common equity shares.
+            </div>
+        </div>
+
+        <div class="category-card">
+            <div>
+                <div class="category-header">
+                    <h3 class="category-name">9. Core Corporate Risks</h3>
+                    <span class="score-badge badge-yellow">Risk Profile Analysis</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill fill-yellow" style="width: 100%;"></div></div>
+                <div class="metric-definition">Identifies external vulnerabilities, platform dependencies, and regulatory risks affecting operations.</div>
+            </div>
+            <div class="analysis-narrative" style="font-size: 13.5px;">
+                • <strong>Tier-1 Customer Concentration:</strong> A substantial portion of multi-gigabit network deployment revenue depends on a small group of major telecom operators (such as Charter and Comcast). Shifts in their capital expenditure schedules present meaningful revenue risks.<br><br>
+                • <strong>Stranded Corporate Overhead Costs:</strong> Completing the Video division sale leaves near-term shared corporate overhead and "stranded costs" (~$10M projected for FY26) that must be systematically optimized out of the leaner standalone cost structure.<br><br>
+                • <strong>Fiber Transformation Competition:</strong> While the cOS engine holds a dominant position in virtualized cable access, competing hardware and software providers are fighting for fiber-to-the-home market share, requiring sustained R&D outlays.
+            </div>
+        </div>
+
+        <div class="category-card">
+            <div>
+                <div class="category-header">
+                    <h3 class="category-name">10. Institutional Sentiment & Price Momentum</h3>
+                    <span class="score-badge badge-green">7.0 / 10</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill fill-green" style="width: 70%;"></div></div>
+                <div class="metric-definition">Tracks professional research consensus ratings alongside recent equity market price velocity.</div>
+                <div class="data-box">Wall Street Consensus: Strong Buy (~91.6% Bullish) | S&P Global 12-Month Target Mean: $15.29 | 52-Week Range: $7.80 - $17.68</div>
+            </div>
+            <div class="analysis-narrative">
+                The institutional research community maintains an optimistic consensus outlook on Harmonic, driven by the structural pivot toward pure broadband hosting. Market price velocity has been exceptionally strong, climbing over 60% during the past three months to consolidate near $15.08 following multiple target increases from several sell-side firms. This leaves the current trading spot price aligned with Wall Street's current median target estimation.
+            </div>
+        </div>
+
+    </main>
+
+    <section class="summary-banner">
+        <div class="summary-title">Fundamentals Snapshot Score: 7.2 / 10</div>
+        <div class="summary-desc">“Solid fundamentals with some mixed areas”</div>
+        <p class="weighting-breakdown">
+            <strong>Weighting Methodology:</strong> This baseline financial profile weights four core pillars heavily: <strong>Valuation (25%)</strong>, <strong>Financial Health (25%)</strong>, <strong>Profitability (25%)</strong>, and <strong>Growth (25%)</strong> equally. Harmonic's score reflects strong segment revenue expansion, record contract backlogs, and an extensive short-term cash runway, which balance its near-term margin compression and elevated trailing GAAP multiples.
+        </p>
+    </section>
+
+    <section class="perspectives-container">
+        
+        <div class="perspective-pane bullish">
+            <h4 class="perspective-title" style="color: var(--color-success);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
+                Analytical Perspectives: The Bull Case
+            </h4>
+            <ul class="perspective-list">
+                <li><strong>Pure-Play Broadband Optimization:</strong> Finalizing the $145 million Video business sale removes a slower-growing segment, allowing management to streamline operations around its high-margin cOS platform.</li>
+                <li><strong>Exceptional Order Backlog Visibility:</strong> Backlog and deferred revenue expanding 87% year-over-year to $582.1 million provides strong revenue visibility that spans multiple fiscal periods.</li>
+                <li><strong>Fortified Capital Structure Safety:</strong> A manageable debt profile paired with a $145 million incoming cash injection establishes a robust net-cash buffer to clear short-term obligations and fund buybacks.</li>
+                <li><strong>Capital-Efficient Operational Design:</strong> A software-centric virtualized bank framework keeps quarterly physical capital expenditures minimal, supporting high free cash flow conversion.</li>
+            </ul>
+        </div>
+
+        <div class="perspective-pane bearish">
+            <h4 class="perspective-title" style="color: var(--color-danger);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/></svg>
+                Analytical Perspectives: The Bear Case
+            </h4>
+            <ul class="perspective-list">
+                <li><strong>Significant Client Concentration:</strong> Heavy operational dependence on a small group of Tier-1 telecommunication operators leaves revenue vulnerable to unexpected capital spending pullbacks.</li>
+                <li><strong>Near-Term Stranded Corporate Overhead:</strong> Shrinking into a standalone broadband business leaves roughly $10 million in stranded corporate costs that could temporarily weigh on profit margins.</li>
+                <li><strong>Elevated Trailing Multiple Distortions:</strong> Highly elevated trailing GAAP P/E ratios require consistent execution in broadband scaling, leaving little margin for deployment delays.</li>
+                <li><strong>Intense Fiber Transition Competition:</strong> Competing network equipment providers are actively defending fiber-to-the-home market share, necessitating continuous research outlays to protect positioning.</li>
+            </ul>
+        </div>
+
+    </section>
+
+    <footer class="institutional-disclaimer">
+        <h5 class="disclaimer-title">
+            <span>⚠️</span> REGULATORY COMPLIANCE DISCLOSURE &amp; ANALYSIS FRAMEWORK
+        </h5>
+        <p style="margin: 0 0 12px 0; line-height: 1.6;">
+            This profile is prepared exclusively as AI-generated educational content designed to illustrate institutional equity research frameworks. It does <strong>NOT</strong> constitute personalized investment advice, financial planning, or a formal recommendation, solicitation, or endorsement to buy, sell, or hold any security, financial instrument, or market derivative mentioned.
+        </p>
+        <p style="margin: 0 0 12px 0; line-height: 1.6;">
+            The metric values, score allocations, and summary ratings describe standalone financial and operational characteristics derived from public records. They are <strong>NOT</strong> an evaluation of market investment quality or attractiveness, and should never be interpreted as a buy or sell signal.
+        </p>
+        <p style="margin: 0 0 12px 0; line-height: 1.6;">
+            This factor breakdown should serve <strong>ONLY</strong> as a preliminary starting point for your own research. It is not a complete or sufficient analysis to support an investment thesis. A proper investment decision requires comprehensive due diligence, checking primary corporate investor communications, verifying official SEC disclosures (including Forms 10-K and 10-Q), and factoring in your personal financial situation, risk profile, and investment horizon.
+        </p>
+        <p style="margin: 0 0 12px 0; line-height: 1.6;">
+            <strong>Historical performance trends offer no guarantee of future operational metrics.</strong> High-technology telecommunication networks, cloud-native software architectures, and broadband infrastructure markets change quickly, and figures shown reflect past periods that may diverge significantly from subsequent corporate performance.
+        </p>
+        <p style="margin: 0 0 12px 0; line-height: 1.6;">
+            The underlying analytical data may be subject to market delays, transcription gaps, or reporting inaccuracies. Investors must verify all stock prices, financial statements, and regulatory timelines directly from primary company filings before allocating capital. The automated score metrics rely on basic models that may not suit your specific risk tolerance or asset objectives. Always execute independent research and consult a licensed financial professional before making financial market investments.
+        </p>
+    </footer>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equity Research Report: Credo Technology Group Holding Ltd. (CRDO)</title>
+    <style>
+        :root {
+            --bg-canvas: #f8fafc;
+            --surface-card: #ffffff;
+            --text-main: #0f172a;
+            --text-secondary: #475569;
+            --primary-accent: #6366f1; /* Professional technology indigo */
+            --primary-light: #f5f3ff;
+            --color-success: #16a34a;
+            --color-success-bg: #f0fdf4;
+            --color-warning: #d97706;
+            --color-warning-bg: #fefce8;
+            --color-danger: #dc2626;
+            --color-danger-bg: #fef2f2;
+            --border-muted: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-canvas);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 16px;
+        }
+
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+        }
+
+        /* Executive Header Dashboard */
+        .header-dashboard {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #ffffff;
+            border-radius: 16px;
+            padding: 28px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-meta h1 {
+            margin: 0 0 6px 0;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+
+        .ticker-badge {
+            background-color: var(--primary-accent);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .date-badge {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .price-container {
+            font-size: 36px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 12px 0 0 0;
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .currency-label {
+            font-size: 16px;
+            font-weight: 400;
+            color: #94a3b8;
+        }
+
+        .gauge-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .gauge-svg {
+            width: 130px;
+            height: 130px;
+        }
+
+        .gauge-track {
+            fill: none;
+            stroke: #334155;
+            stroke-width: 10;
+        }
+
+        .gauge-fill {
+            fill: none;
+            stroke: var(--color-warning);
+            stroke-width: 10;
+            stroke-dasharray: 283;
+            stroke-dashoffset: 59.4; /* Reflects 7.9/10 Score */
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: center;
+        }
+
+        .gauge-value {
+            font-size: 24px;
+            font-weight: 800;
+            fill: #ffffff;
+        }
+
+        .gauge-caption {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        /* Infographic SVG Charts Grid */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        @media(min-width: 768px) {
+            .charts-row {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .chart-card {
+            background-color: var(--surface-card);
+            border: 1px solid var(--border-muted);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .chart-card h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin: 0 0 16px 0;
+            text-align: center;
+            width: 100%;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 8px;
+        }
+
+        /* Scorecard Category Layout */
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        @media(min-width: 768px) {
+            .matrix-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .category-card {
+            background-color: var(--surface-card);
+            border: 1px solid var(--border-muted);
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .category-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        .score-badge {
+            font-size: 13px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        .badge-green { color: var(--color-success); background-color: var(--color-success-bg); }
+        .badge-yellow { color: var(--color-warning); background-color: var(--color-warning-bg); }
+        .badge-red { color: var(--color-danger); background-color: var(--color-danger-bg); }
+
+        .bar-track {
+            background-color: #f1f5f9;
+            height: 8px;
+            border-radius: 4px;
+            width: 100%;
+            margin-bottom: 14px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .fill-green { background-color: var(--color-success); }
+        .fill-yellow { background-color: var(--color-warning); }
+        .fill-red { background-color: var(--color-danger); }
+
+        .metric-definition {
+            font-style: italic;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .data-box {
+            background-color: #f8fafc;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            font-family: Menlo, Monaco, Consolas, monospace;
+            margin-bottom: 12px;
+            color: #334155;
+            border-left: 3px solid #64748b;
+        }
+
+        .analysis-narrative {
+            font-size: 14.5px;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            flex-grow: 1;
+        }
+
+        /* Advanced Concept Callouts */
+        .plain-english-callout {
+            background-color: var(--primary-light);
+            border: 1px solid #ddd6fe;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 13.5px;
+            color: #4338ca;
+        }
+
+        .plain-english-callout strong {
+            color: var(--primary-accent);
+        }
+
+        /* Summary Banner Component */
+        .summary-banner {
+            background-color: var(--color-warning-bg);
+            border: 1px solid #fef08a;
+            border-radius: 14px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .summary-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #854d0e;
+            margin-bottom: 6px;
+        }
+
+        .summary-desc {
+            font-size: 16px;
+            color: var(--color-warning);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .weighting-breakdown {
+            margin: 0;
+            font-size: 13.5px;
+            color: #713f12;
+            max-width: 850px;
+            display: inline-block;
+        }
+
+        /* Bull vs Bear Two-Column Layout */
+        .perspectives-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        @media(min-width: 768px) {
+            .perspectives-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .perspective-pane {
+            background-color: var(--surface-card);
+            border: 1px solid var(--border-muted);
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .perspective-pane.bullish { border-top: 4px solid var(--color-success); }
+        .perspective-pane.bearish { border-top: 4px solid var(--color-danger); }
+
+        .perspective-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .perspective-list {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .perspective-list li {
+            margin-bottom: 12px;
+            font-size: 14.5px;
+            color: var(--text-main);
+        }
+
+        /* Institutional Disclaimer Styling */
+        .institutional-disclaimer {
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 14px;
+            padding: 24px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 48px;
+        }
+
+        .disclaimer-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-top: 0;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="header-dashboard">
+        <div class="header-meta">
+            <h1>Credo Technology Group Holding Ltd. <span class="ticker-badge">NASDAQ: CRDO</span></h1>
+            <div class="date-badge">Educational Analysis Context: June 2026 | Sector: Semiconductors & Connectivity Hardware</div>
+            <div class="price-container">$249.33 <span class="currency-label">USD</span></div>
+        </div>
+        <div class="gauge-wrapper">
+            <svg class="gauge-svg" viewBox="0 0 100 100">
+                <circle class="gauge-track" cx="50" cy="50" r="45"></circle>
+                <circle class="gauge-fill" cx="50" cy="50" r="45"></circle>
+                <text class="gauge-value" cx="50" cy="56" text-anchor="middle">7.9</text>
+            </svg>
+            <div class="gauge-caption">Fundamentals Snapshot<br><span style="color:var(--color-warning);">Solid / High Growth Profile</span></div>
+        </div>
+    </header>
+
+    <section class="charts-row">
+        <div class="chart-card">
+            <h3>Annual Revenue Execution ($ Millions)</h3>
+            <svg width="240" height="150" viewBox="0 0 240 150">
+                <line x1="35" y1="110" x2="220" y2="110" stroke="#cbd5e1" stroke-width="1"/>
+                <line x1="35" y1="70" x2="220" y2="70" stroke="#f1f5f9" stroke-dasharray="2" stroke-width="1"/>
+                <line x1="35" y1="30" x2="220" y2="30" stroke="#f1f5f9" stroke-dasharray="2" stroke-width="1"/>
+                
+                <rect x="55" y="99" width="22" height="11" fill="#94a3b8"/>
+                <text x="66" y="125" font-size="10" text-anchor="middle" fill="#64748b">FY24</text>
+                <text x="66" y="93" font-size="9" text-anchor="middle" font-weight="600" fill="#475569">$193M</text>
+                
+                <rect x="110" y="85" width="22" height="25" fill="#6366f1"/>
+                <text x="121" y="125" font-size="10" text-anchor="middle" fill="#64748b">FY25</text>
+                <text x="121" y="79" font-size="9" text-anchor="middle" font-weight="600" fill="#6366f1">$437M</text>
+                
+                <rect x="165" y="32" width="22" height="78" fill="#4338ca"/>
+                <text x="176" y="125" font-size="10" text-anchor="middle" fill="#64748b">FY26</text>
+                <text x="176" y="25" font-size="9" text-anchor="middle" font-weight="600" fill="#4338ca">$1,335M</text>
+            </svg>
+        </div>
+
+        <div class="chart-card">
+            <h3>LTM Core Profit Margins Profile</h3>
+            <svg width="240" height="150" viewBox="0 0 240 150">
+                <rect x="45" y="32" width="40" height="88" fill="#16a34a" rx="2"/>
+                <text x="65" y="70" font-size="11" font-weight="700" fill="white" text-anchor="middle">66.5%</text>
+                <text x="65" y="135" font-size="9.5" text-anchor="middle" fill="#475569" font-weight="600">Gross Margin</text>
+                
+                <rect x="145" y="65" width="40" height="55" fill="#0284c7" rx="2"/>
+                <text x="165" y="88" font-size="11" font-weight="700" fill="white" text-anchor="middle">35.4%</text>
+                <text x="165" y="135" font-size="9.5" text-anchor="middle" fill="#475569" font-weight="600">GAAP Net Mgn</text>
+                
+                <line x1="20" y1="120" x2="220" y2="120" stroke="#475569" stroke-width="1"/>
+            </svg>
+        </div>
+
+        <div class="chart-card">
+            <h3>Forward Price-to-Sales (P/S) Comparison</h3>
+            <svg width="240" height="150" viewBox="0 0 240 150">
+                <line x1="75" y1="20" x2="75" y2="120" stroke="#475569" stroke-width="1.5"/>
+                
+                <text x="65" y="45" font-size="10" text-anchor="end" font-weight="600">CRDO (Fwd)</text>
+                <rect x="75" y="35" width="115" height="14" fill="#6366f1"/>
+                <text x="195" y="46" font-size="10" font-weight="700" fill="#6366f1">18.3x</text>
+
+                <text x="65" y="75" font-size="10" text-anchor="end">Growth Peers</text>
+                <rect x="75" y="65" width="65" height="14" fill="#94a3b8"/>
+                <text x="145" y="76" font-size="10" fill="#475569">10.5x</text>
+
+                <text x="65" y="105" font-size="10" text-anchor="end">Sector Avg</text>
+                <rect x="75" y="95" width="22" height="14" fill="#94a3b8"/>
+                <text x="102" y="106" font-size="10" fill="#475569">3.4x</text>
+            </svg>
+        </div>
+    </section>
+
+    <main class="matrix-grid">
+
+        <div class="category-card">
+            <div>
+                <div class="category-header">
+                    <h3 class="category-name">1. Business Model & Moat</h3>
+                    <span class="score-badge badge-green">7.0 / 10</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill fill-green" style="width: 70%;"></div></div>
+                <div class="metric-definition">Measures the company's core operations, monetization streams, and structural competitive barriers.</div>
+                <div class="data-box">Platform Focus: Serializer-Deserializer (SerDes) Architecture | Tech Segments: Active Electrical Cables (AEC), Optical DSPs, SerDes IP</div>
+            </div>
+            <div class="analysis-narrative">
+                Credo Technology provides high-speed, energy-efficient connectivity solutions designed to solve bandwidth bottlenecks inside hyper-scale AI data centers. The business model generates revenue through product shipments (specifically its core Active Electrical Cables used to link densified GPU clusters) alongside high-margin IP licensing and custom silicon (ASIC) development. While its technical expertise in power-optimized connectivity provides an initial entry point during hardware redesign cycles, long-term switching costs across raw cable provisioning remain competitive, and market validation depends heavily on maintaining an edge over alternative optical platforms.
+            </div>
+        </div>
+
+        <div class="category-card">
+            <div>
+                <div class="category-header">
+                    <h3 class="category-name">2. Valuation Multiples</h3>
+                    <span class="score-badge badge-yellow">4.5 / 10</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill fill-yellow" style="width: 45%;"></div></div>
+                <div class="metric-definition">Measures equity price relative to fundamentals like net earnings, revenues, and historical sector trends.</div>
+                <div class="data-box">Trailing GAAP P/E: 93.6x | Forward P/E (FY27): 38.7x | Trailing P/S: 33.1x | Forward P/S (FY27): 18.3x</div>
+            </div>
+            <div class="analysis-narrative">
+                Credo trades at an aggressive premium relative to mature semiconductor chip operators and the broader technology hardware sector. Its trailing P/S ratio of 33.1x sits significantly above the standard hardware industry median of 3.4x, reflecting high market expectations for its data center products. While near-term forward multiples contract based on estimated top-line expansion pipelines, current asset pricing leaves little cushion for sequential contract slowdowns.
+            </div>
+            <div class="plain-english-callout">
+                📘 <strong>In Plain English:</strong> The <strong>Forward Price-to-Earnings (P/E) Ratio</strong> shows how much an investor pays today for every dollar of estimated profit next year. A forward P/E of 38.7x means that for every $1.00 of projected net income, investors are paying $38.70 upfront. The <strong>Price-to-Sales (P/S) Ratio</strong> compares total market valuation against annual revenue; a multiple of 33.1x highlights that current stock valuations reflect significant embedded expectations for volume growth.
+            </div>
+        </div>
+
+        <div class="category-card">
+            <div>
+                <div class="category-header">
+                    <h3 class="category-name">3. Profitability Profile</h3>
+                    <span class="score-badge badge-green">8.5 / 10</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill fill-green" style="width: 85%;"></div></div>
+                <div class="metric-definition">Evaluates structural corporate expense control, bottom-line conversion rates, and capital efficiency returns.</div>
+                <div class="data-box">GAAP Gross Margin: ~66.5% | GAAP Operating Margin: 33.3% | TTM GAAP Net Margin: 35.4% | GAAP ROE: ~15.2%</div>
+            </div>
+            <div class="analysis-narrative">
+                Credo demonstrates high structural profit efficiency by utilizing an outsourced, fabless chip fabrication strategy. This keeps direct asset manufacturing capital requirements low, allowing its high-speed connectivity solutions to yield strong margins. Top-line expansion converts efficiently down into bottom-line performance, with a GAAP net profit margin of 35.4% supported by a strong non-GAAP net income print of $662 million for the full fiscal year 2026.
+            </div>
+        </div>
+
+        <div class="category-card">
+            <div>
+                <div class="category-header">
+                    <h3 class="category-name">4. Growth Velocity</h3>
+                    <span class="score-badge badge-green">9.5 / 10</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill fill-green" style="width: 95%;"></div></div>
+                <div class="metric-definition">Tracks historical expansion speed alongside consensus future top-line and bottom-line growth velocity.</div>
+                <div class="data-box">FY2026 Revenue Growth: +205.7% YoY ($1.335B) | Q4 FY26 Revenue Growth: +157% YoY | FY27 Revenue Target: ~$2.4B</div>
+            </div>
+            <div class="analysis-narrative">
+                Top-line growth has accelerated rapidly, driven by the rollout of densified GPU cluster network connections inside AI infrastructure centers. Annual revenue more than tripled to $1.335 billion for fiscal 2026, up from $436.8 million in fiscal 2025. Forward consensus analyst projections suggest an ongoing expansion path, targeting full-year revenue near $2.4 billion for fiscal 2027.
+            </div>
+        </div>
+
+        <div class="category-card">
+            <div>
+                <div class="category-header">
+                    <h3 class="category-name">5. Balance Sheet Strength</h3>
+                    <span class="score-badge badge-green">9.5 / 10</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill fill-green" style="width: 95%;"></div></div>
+                <div class="metric-definition">Measures capital structure protection, liquidity safety margins, and structural capacity to meet commitments.</div>
+                <div class="data-box">Total Institutional Debt: $0.00 | Cash & Short-Term Liquid Holdings: ~$1.40 Billion | Solvency Risk: Minimal</div>
+            </div>
+            <div class="analysis-narrative">
+                The corporate balance sheet exhibits a highly liquid, conservative design. Credo operates completely free of long-term institutional bank debt, eliminating structural refinancing vulnerabilities or interest coverage friction. Available cash and short-term liquid asset reserves stand at approximately $1.4 billion, providing an extensive internal runway to fund ongoing high-performance component development out of current cash assets.
+            </div>
+        </div>
+
+        <div class="category-card">
+            <div>
+                <div class="category-header">
+                    <h3 class="category-name">6. Cash Flow Dynamics</h3>
+                    <span class="score-badge badge-green">8.0 / 10</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill fill-green" style="width: 80%;"></div></div>
+                <div class="metric-definition">Determines the cash generated by standard enterprise operations after accounting for physical property additions.</div>
+                <div class="data-box">TTM Cash Flow from Operations (CFO): ~$500 Million | Free Cash Flow: Net Positive | Cash-to-Profit Quality: Robust</div>
+            </div>
+            <div class="analysis-narrative">
+                Reported accounting profits convert reliably into organic cash generation. Because its fabless operational profile avoids heavy physical plant construction costs, capital expenditure demands remain low. Day-to-day operations brought in roughly $500 million in trailing operating cash flow, confirming that net income trends are backed by genuine cash accumulation rather than non-cash accounting adjustments.
+            </div>
+            <div class="plain-english-callout">
+                📘 <strong>In Plain English:</strong> <strong>Free Cash Flow (FCF)</strong> represents the actual physical cash a business retains after funding daily operations and purchasing equipment upgrades. High free cash flow indicates that the company generates a genuine cash surplus, which can be used to fund research and development or build cash reserves without relying on outside credit channels.
+            </div>
+        </div>
+
+        <div class="category-card">
+            <div>
+                <div class="category-header">
+                    <h3 class="category-name">7. Dividend Profile</h3>
+                    <span class="score-badge badge-red">0.0 / 10</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill fill-red" style="width: 0%;"></div></div>
+                <div class="metric-definition">Evaluates structural cash distribution yield payouts and stability records returned directly back to capital providers.</div>
+                <div class="data-box">Annual Dividend Yield: 0.0% | Payout Allocation: 0.0% | Distribution History: None</div>
+            </div>
+            <div class="analysis-narrative">
+                Credo Technology does not distribute a cash dividend. As is standard for high-growth connectivity design innovators, all generated capital surplus is retained internally to fund ongoing advanced product engineering and expand cash reserves.
+            </div>
+        </div>
+
+        <div class="category-card">
+            <div>
+                <div class="category-header">
+                    <h3 class="category-name">8. Management Execution</h3>
+                    <span class="score-badge badge-yellow">6.5 / 10</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill fill-yellow" style="width: 65%;"></div></div>
+                <div class="metric-definition">Tracks management's historical pivot execution, acquisition integration, and operational capital design.</div>
+                <div class="data-box">CEO: Bill Brennan | Stock-Based Compensation/Revenue: ~14% | 12-Month Net Insider Disposals: ~$25M</div>
+            </div>
+            <div class="analysis-narrative">
+                Executive leadership has delivered strong operational performance, successfully positioning its component portfolio to capitalize on high-speed data center connectivity requirements. However, their capital allocation model relies heavily on non-cash equity incentives, with stock-based compensation running at 14% of total revenues. Furthermore, substantial net insider selling totaling roughly $25 million over the past 12 months introduces an element that warrants continued observation.
+            </div>
+        </div>
+
+        <div class="category-card">
+            <div>
+                <div class="category-header">
+                    <h3 class="category-name">9. Core Corporate Risks</h3>
+                    <span class="score-badge badge-yellow">Risk Profile Analysis</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill fill-yellow" style="width: 100%;"></div></div>
+                <div class="metric-definition">Identifies external vulnerabilities, platform dependencies, and regulatory risks affecting operations.</div>
+            </div>
+            <div class="analysis-narrative" style="font-size: 13.5px;">
+                • <strong>Severe Customer Concentration:</strong> A substantial portion of product shipment revenue depends on only two primary cloud hyperscale buyers. The loss of orders or design wins from either partner could significantly impact financial metrics.<br><br>
+                • <strong>No Long-Term Sales Commitments:</strong> Customers do not operate under binding, long-term purchase requirements. This lack of contractual backlogs can increase short-term revenue unpredictability during industry inventory shifts.<br><br>
+                • <strong>Optical Technology Transition Hurdles:</strong> As the product engine expands from copper-based cables into next-generation optical platforms, the firm faces execution risks in achieving timely mass-volume commercialization.
+            </div>
+        </div>
+
+        <div class="category-card">
+            <div>
+                <div class="category-header">
+                    <h3 class="category-name">10. Institutional Sentiment & Price Momentum</h3>
+                    <span class="score-badge badge-green">8.0 / 10</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill fill-green" style="width: 80%;"></div></div>
+                <div class="metric-definition">Tracks professional research consensus ratings alongside recent equity market price velocity.</div>
+                <div class="data-box">Wall Street Consensus: Strong Buy | Average 1-Year Target Price: ~$256.00 - $263.60 | 52-Week Range: $81.72 - $274.90</div>
+            </div>
+            <div class="analysis-narrative">
+                The institutional investment community maintains an optimistic consensus outlook on Credo, supported by target upward adjustments from several research firms following the latest quarterly earnings beat. Market price velocity has been exceptionally strong, climbing over 190% during the past year to consolidate near $249.33 after profit-taking moderated recent all-time highs. This places the current trading spot price just below Wall Street's current median target estimation.
+            </div>
+        </div>
+
+    </main>
+
+    <section class="summary-banner">
+        <div class="summary-title">Fundamentals Snapshot Score: 7.9 / 10</div>
+        <div class="summary-desc">“Solid fundamentals with some mixed areas”</div>
+        <p class="weighting-breakdown">
+            <strong>Weighting Rationale:</strong> This objective financial profile weights four core pillars heavily: <strong>Valuation (25%)</strong>, <strong>Financial Health (25%)</strong>, <strong>Profitability (25%)</strong>, and <strong>Growth (25%)</strong> equally. Credo's score reflects rapid revenue expansion, a debt-free capital structure, and efficient operational cash margins, which balance its premium forward valuation multiples and severe near-term customer concentration risks.
+        </p>
+    </section>
+
+    <section class="perspectives-container">
+        
+        <div class="perspective-pane bullish">
+            <h4 class="perspective-title" style="color: var(--color-success);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
+                Analytical Perspectives: The Bull Case
+            </h4>
+            <ul class="perspective-list">
+                <li><strong>Secular AI Connectivity Tailwinds:</strong> The accelerating deployment of high-density GPU clusters drives significant demand for power-optimized Active Electrical Cables to manage data center bandwidth.</li>
+                <li><strong>High Gross Margin Model:</strong> A structural GAAP gross margin near 66% combined with a capital-efficient fabless model allows revenue growth to convert effectively into net operating profits.</li>
+                <li><strong>Flawless Capital Structure Safety:</strong> Operating completely free of institutional long-term debt with $1.4 billion in cash reserves insulates the firm from credit market volatility or debt service pressures.</li>
+                <li><strong>Consistent Target Execution:</strong> Top-line revenue more than tripling year-over-year to $1.335 billion validates product validation and commercial adoption among leading network buildouts.</li>
+            </ul>
+        </div>
+
+        <div class="perspective-pane bearish">
+            <h4 class="perspective-title" style="color: var(--color-danger);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/></svg>
+                Analytical Perspectives: The Bear Case
+            </h4>
+            <ul class="perspective-list">
+                <li><strong>Premium Embedded Valuation Multiples:</strong> Trading at a trailing P/S multiple above 33x and a forward P/E near 39x implies high execution expectations, exposing the stock to multiple compression if growth rates moderate.</li>
+                <li><strong>Severe Customer Concentration:</strong> Relying on only two major cloud hyperscalers for a substantial portion of revenue exposes the company to downside variance if either client reduces orders.</li>
+                <li><strong>Lack of Binding Order Visibility:</strong> Operating without long-term purchase commitments increases near-term revenue unpredictability during broader technology hardware inventory digestion phases.</li>
+                <li><strong>Execution Risks in Optical Pivot:</strong> Expanding the product engine into unproven optical portfolios introduces technical implementation and design-win execution challenges against larger incumbents.</li>
+            </ul>
+        </div>
+
+    </section>
+
+    <footer class="institutional-disclaimer">
+        <h5 class="disclaimer-title">
+            <span>⚠️</span> REGULATORY COMPLIANCE DISCLOSURE &amp; ANALYSIS FRAMEWORK
+        </h5>
+        <p style="margin: 0 0 12px 0; line-height: 1.6;">
+            This profile is prepared exclusively as AI-generated educational content designed to illustrate institutional equity research frameworks. It does <strong>NOT</strong> constitute personalized investment advice, financial planning, or a formal recommendation, solicitation, or endorsement to buy, sell, or hold any security, financial instrument, or market derivative mentioned.
+        </p>
+        <p style="margin: 0 0 12px 0; line-height: 1.6;">
+            The metric values, score allocations, and summary ratings describe standalone financial and operational characteristics derived from public records. They are <strong>NOT</strong> an evaluation of market investment quality or attractiveness, and should never be interpreted as a buy or sell signal.
+        </p>
+        <p style="margin: 0 0 12px 0; line-height: 1.6;">
+            This factor breakdown should serve <strong>ONLY</strong> as a preliminary starting point for your own research. It is not a complete or sufficient analysis to support an investment thesis. A proper investment decision requires comprehensive due diligence, checking primary corporate investor communications, verifying official SEC disclosures (including Forms 10-K and 10-Q), and factoring in your personal financial situation, risk profile, and investment horizon.
+        </p>
+        <p style="margin: 0 0 12px 0; line-height: 1.6;">
+            <strong>Historical performance trends offer no guarantee of future operational metrics.</strong> High-technology semiconductor and high-speed data center data connectivity markets change quickly, and figures shown reflect past periods that may diverge significantly from subsequent corporate performance.
+        </p>
+        <p style="margin: 0 0 12px 0; line-height: 1.6;">
+            The underlying analytical data may be subject to market delays, transcription gaps, or reporting inaccuracies. Investors must verify all stock prices, financial statements, and regulatory timelines directly from primary company filings before allocating capital. The automated score metrics rely on basic models that may not suit your specific risk tolerance or asset objectives. Always execute independent research and consult a licensed financial professional before making financial market investments.
+        </p>
+    </footer>
+
+</div>
+
+</body>
+</html>

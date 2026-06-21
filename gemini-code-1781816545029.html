@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equity Research Report: Rocket Lab USA, Inc. (RKLB)</title>
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --accent-blue: #0284c7;
+            --accent-blue-light: #f0f9ff;
+            --green-solid: #16a34a;
+            --green-light: #f0fdf4;
+            --yellow-solid: #ca8a04;
+            --yellow-light: #fefce8;
+            --red-solid: #dc2626;
+            --red-light: #fef2f2;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.5;
+            margin: 0;
+            padding: 16px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header Dashboard */
+        .dashboard-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .header-left h1 {
+            margin: 0 0 4px 0;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .ticker-badge {
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+
+        .price-meta {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .price-large {
+            font-size: 32px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 8px 0 0 0;
+        }
+
+        .gauge-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .gauge-svg {
+            width: 120px;
+            height: 120px;
+        }
+
+        .gauge-bg {
+            fill: none;
+            stroke: #334155;
+            stroke-width: 10;
+        }
+
+        .gauge-fill {
+            fill: none;
+            stroke: var(--green-solid);
+            stroke-width: 10;
+            stroke-dasharray: 283;
+            stroke-dashoffset: 113.1; /* Reflects 6.0/10 score */
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: center;
+        }
+
+        .gauge-text {
+            font-size: 22px;
+            font-weight: 700;
+            fill: #ffffff;
+            font-family: sans-serif;
+        }
+
+        .gauge-label {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* Grid Scorecard */
+        .scorecard-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        @media(min-width: 768px) {
+            .scorecard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .score-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        .card-score-badge {
+            font-size: 14px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        .badge-green { color: var(--green-solid); background-color: var(--green-light); }
+        .badge-yellow { color: var(--yellow-solid); background-color: var(--yellow-light); }
+        .badge-red { color: var(--red-solid); background-color: var(--red-light); }
+
+        .progress-bar-bg {
+            background-color: var(--border-color);
+            height: 8px;
+            border-radius: 4px;
+            width: 100%;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .fill-green { background-color: var(--green-solid); }
+        .fill-yellow { background-color: var(--yellow-solid); }
+        .fill-red { background-color: var(--red-solid); }
+
+        .measure-statement {
+            font-style: italic;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .metrics-box {
+            background-color: var(--bg-primary);
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: monospace;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            border-left: 3px solid var(--text-muted);
+        }
+
+        .analysis-text {
+            font-size: 14px;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            flex-grow: 1;
+        }
+
+        /* Callout Boxes */
+        .plain-english-box {
+            background-color: var(--accent-blue-light);
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #0369a1;
+        }
+
+        .plain-english-box strong {
+            color: #0284c7;
+        }
+
+        /* Charts Section */
+        .charts-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        @media(min-width: 900px) {
+            .charts-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .chart-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .chart-card h3 {
+            font-size: 14px;
+            margin: 0 0 16px 0;
+            color: var(--text-muted);
+            text-align: center;
+            width: 100%;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        /* Summary Banner */
+        .summary-banner {
+            background-color: var(--green-light);
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .summary-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #14532d;
+            margin-bottom: 4px;
+        }
+
+        .summary-desc {
+            font-size: 15px;
+            color: #166534;
+            font-weight: 600;
+        }
+
+        /* Two Column Considerations Section */
+        .viewpoints-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        @media(min-width: 768px) {
+            .viewpoints-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .viewpoint-column {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .viewpoint-column.bull-side { border-top: 4px solid var(--green-solid); }
+        .viewpoint-column.bear-side { border-top: 4px solid var(--red-solid); }
+
+        .viewpoint-header {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .viewpoint-list {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .viewpoint-list li {
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+
+        /* Disclaimer Styling */
+        .disclaimer-box {
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 40px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .disclaimer-heading {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-top: 0;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="dashboard-header">
+        <div class="header-left">
+            <h1>Rocket Lab USA, Inc. <span class="ticker-badge">NASDAQ: RKLB</span></h1>
+            <div class="price-meta">Analysis Date: June 2026 | Industry: Aerospace, Defense & Space Systems</div>
+            <div class="price-large">$107.24 <span style="font-size:14px; font-weight:normal; color:#94a3b8;">USD</span></div>
+        </div>
+        <div class="gauge-container">
+            <svg class="gauge-svg" viewBox="0 0 100 100">
+                <circle class="gauge-bg" cx="50" cy="50" r="45"></circle>
+                <circle class="gauge-fill" cx="50" cy="50" r="45"></circle>
+                <text class="gauge-text" cx="50" cy="55" text-anchor="middle">6.0</text>
+            </svg>
+            <div class="gauge-label">Fundamentals Snapshot<br><span style="color:var(--green-solid);">Solid / Growth Multi-faceted</span></div>
+        </div>
+    </header>
+
+    <section class="charts-container">
+        <div class="chart-card">
+            <h3>Annual Revenue Trend ($ Millions)</h3>
+            <svg width="220" height="160" viewBox="0 0 220 160">
+                <line x1="40" y1="120" x2="200" y2="120" stroke="#e2e8f0" stroke-width="1"/>
+                <line x1="40" y1="75" x2="200" y2="75" stroke="#e2e8f0" stroke-dasharray="3" stroke-width="1"/>
+                <line x1="40" y1="30" x2="200" y2="30" stroke="#e2e8f0" stroke-dasharray="3" stroke-width="1"/>
+                
+                <rect x="50" y="98" width="22" height="22" fill="#94a3b8"/>
+                <text x="61" y="135" font-size="10" text-anchor="middle" fill="#475569">2023</text>
+                <text x="61" y="92" font-size="9" text-anchor="middle" font-weight="600">$245</text>
+                
+                <rect x="90" y="81" width="22" height="39" fill="#0284c7"/>
+                <text x="101" y="135" font-size="10" text-anchor="middle" fill="#475569">2024</text>
+                <text x="101" y="75" font-size="9" text-anchor="middle" font-weight="600">$436</text>
+
+                <rect x="130" y="66" width="22" height="54" fill="#0369a1"/>
+                <text x="141" y="135" font-size="10" text-anchor="middle" fill="#475569">2025</text>
+                <text x="141" y="60" font-size="9" text-anchor="middle" font-weight="600">$602</text>
+                
+                <rect x="170" y="30" width="22" height="90" fill="#16a34a"/>
+                <text x="181" y="135" font-size="10" text-anchor="middle" fill="#475569">2026E</text>
+                <text x="181" y="24" font-size="9" text-anchor="middle" font-weight="600" fill="#16a34a">~$1B</text>
+                
+                <line x1="40" y1="120" x2="200" y2="120" stroke="#475569" stroke-width="1.5"/>
+            </svg>
+        </div>
+
+        <div class="chart-card">
+            <h3>Q1 2026 Margins Profile</h3>
+            <svg width="220" height="160" viewBox="0 0 220 160">
+                <rect x="40" y="35" width="45" height="85" fill="#16a34a" rx="2"/>
+                <text x="62.5" y="75" font-size="12" font-weight="700" fill="white" text-anchor="middle">38.2%</text>
+                <text x="62.5" y="135" font-size="10" text-anchor="middle" fill="#475569" font-weight="600">Gross Margin</text>
+                
+                <rect x="135" y="120" width="45" height="25" fill="#dc2626" rx="2"/>
+                <text x="157.5" y="152" font-size="10" text-anchor="middle" fill="#475569" font-weight="600">Operating Mgn</text>
+                <text x="157.5" y="114" font-size="11" font-weight="700" fill="#dc2626" text-anchor="middle">-28.0%</text>
+                
+                <line x1="20" y1="120" x2="200" y2="120" stroke="#475569" stroke-width="1"/>
+            </svg>
+        </div>
+
+        <div class="chart-card">
+            <h3>Forward Price-to-Sales (P/S) Comparison</h3>
+            <svg width="220" height="160" viewBox="0 0 220 160">
+                <line x1="80" y1="40" x2="200" y2="40" stroke="#e2e8f0" stroke-width="1"/>
+                <line x1="80" y1="80" x2="200" y2="80" stroke="#e2e8f0" stroke-width="1"/>
+                <line x1="80" y1="120" x2="200" y2="120" stroke="#e2e8f0" stroke-width="1"/>
+                
+                <text x="70" y="45" font-size="10" text-anchor="end" font-weight="600">RKLB (Fwd)</text>
+                <rect x="80" y="35" width="110" height="12" fill="#dc2626"/>
+                <text x="195" y="45" font-size="10" font-weight="700">60.0x</text>
+
+                <text x="70" y="85" font-size="10" text-anchor="end">Aerospace Avg</text>
+                <rect x="80" y="75" width="25" height="12" fill="#ca8a04"/>
+                <text x="110" y="85" font-size="10">6.0x</text>
+
+                <text x="70" y="125" font-size="10" text-anchor="end">RKLB 3-Yr Avg</text>
+                <rect x="80" y="115" width="40" height="12" fill="#94a3b8"/>
+                <text x="125" y="125" font-size="10">12.0x</text>
+                
+                <line x1="80" y1="20" x2="80" y2="140" stroke="#475569" stroke-width="1.5"/>
+            </svg>
+        </div>
+    </section>
+
+    <main class="scorecard-grid">
+
+        <div class="score-card">
+            <div>
+                <div class="card-header-row">
+                    <h3 class="card-title">1. Business Model & Moat</h3>
+                    <span class="card-score-badge badge-green">7.5 / 10</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill fill-green" style="width: 75%;"></div></div>
+                <div class="measure-statement">Measures what the company does, how it makes money, and its structural competitive advantages.</div>
+                <div class="metrics-box">Core Segments: Space Systems (68% of Q1 Rev) | Launch Services (32%) | Backlog: $2.2B</div>
+            </div>
+            <div class="analysis-text">
+                Rocket Lab is a vertically integrated space company that pairs launch services (Electron, upcoming Neutron) with a highly profitable satellite component manufacturing division (Space Systems). Its expanding backlog acts as a substantial customer buffer. While the business builds a moat via technical integration, switching costs in commercial small-satellite launching remain relatively liquid due to emerging global launch pad alternatives.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div>
+                <div class="card-header-row">
+                    <h3 class="card-title">2. Valuation Multiples</h3>
+                    <span class="card-score-badge badge-red">2.0 / 10</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill fill-red" style="width: 20%;"></div></div>
+                <div class="measure-statement">Measures if the share price is cheap or expensive relative to core fundamentals and peer history.</div>
+                <div class="metrics-box">Trailing P/S: ~91.0x | Forward P/S: ~60.0x | Trailing & Forward P/E: Negative</div>
+            </div>
+            <div class="analysis-text">
+                The market places an extraordinary premium on RKLB shares, reflecting intense structural momentum rather than current earnings power. Trading at over 60 times forward revenues, the valuation multiples sit far above legacy aerospace or defense hardware components. This signals that the market has fully priced in the perfect future ramp-up of the Neutron launch program.
+            </div>
+            <div class="plain-english-box">
+                📘 <strong>In Plain English:</strong> The <strong>Price-to-Sales (P/S) Ratio</strong> tracks how much value the stock market assigns to a company compared to its top-line sales. A forward P/S of 60x means investors pay $60 upfront for every $1 of revenue expected next year, indicating very steep growth assumptions.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div>
+                <div class="card-header-row">
+                    <h3 class="card-title">3. Profitability Profile</h3>
+                    <span class="card-score-badge badge-red">3.5 / 10</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill fill-red" style="width: 35%;"></div></div>
+                <div class="measure-statement">Evaluates cost efficiency in converting revenue into net operating income and returns on capital.</div>
+                <div class="metrics-box">GAAP Gross Margin: 38.2% | Operating Margin: -28.0% | Q1 2026 Net Loss: $45.0M</div>
+            </div>
+            <div class="analysis-text">
+                Rocket Lab's baseline manufacturing units generate expanding value, visible in the record 38.2% GAAP gross margin driven by high-value space systems. However, deep fixed research and development expenditures for the Neutron medium-lift rocket ($80.5M in Q1) suppress overall operational metrics, leading to a negative operating margin and continuing GAAP net losses.
+            </div>
+            <div class="plain-english-box">
+                📘 <strong>In Plain English:</strong> <strong>Gross Margin vs Operating Margin</strong> reveals the cost cascade. Gross Margin shows the profit left just after direct factory production costs (38.2%), while Operating Margin accounts for necessary long-term overhead like rocket R&D (-28.0%), which currently drives the company into a loss.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div>
+                <div class="card-header-row">
+                    <h3 class="card-title">4. Growth Velocity</h3>
+                    <span class="card-score-badge badge-green">9.5 / 10</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill fill-green" style="width: 95%;"></div></div>
+                <div class="measure-statement">Evaluates the expansion speed of revenues and earnings over historical and forward-looking periods.</div>
+                <div class="metrics-box">Q1 2026 Rev Growth: +63.5% YoY | Backlog Expansion: +108% YoY | Manifest: >70 Flights</div>
+            </div>
+            <div class="analysis-text">
+                Top-line growth indicators are exceptionally high, supported by the global commercial satellite deployment cycle. Revenues reached $200.3M in Q1 2026, and full-year expectations point toward the $1.0B threshold. Concurrently, backlog metrics expanded 108% year-over-year to $2.2B, confirming that customer placement curves are moving faster than current accounting revenue recognition.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div>
+                <div class="card-header-row">
+                    <h3 class="card-title">5. Balance Sheet & Financial Health</h3>
+                    <span class="card-score-badge badge-green">9.0 / 10</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill fill-green" style="width: 90%;"></div></div>
+                <div class="measure-statement">Measures the firm's long-term leverage position and near-term structural liquidity.</div>
+                <div class="metrics-box">Current Ratio: 4.47 | Net Cash Position: $1.2B | Debt-to-Equity Ratio: &lt; 0.05x</div>
+            </div>
+            <div class="analysis-text">
+                The corporate balance sheet features highly conservative defense mechanisms. Total current assets ($1.80B) outpace current liabilities ($402M) by a wide margin, and the completion of recent at-the-market equity offerings has increased liquid reserves to $1.2B. Explicit long-term debt consists of minor senior convertible notes, presenting very little structural insolvency risk.
+            </div>
+            <div class="plain-english-box">
+                📘 <strong>In Plain English:</strong> The <strong>Current Ratio</strong> tests short-term liquid health by matching assets against bills due within twelve months. Rocket Lab’s score of 4.47 indicates it possesses $4.47 in cash and flexible holdings for every $1.00 of near-term obligations, providing substantial financial flexibility.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div>
+                <div class="card-header-row">
+                    <h3 class="card-title">6. Cash Flow Dynamics</h3>
+                    <span class="card-score-badge badge-red">3.0 / 10</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill fill-red" style="width: 30%;"></div></div>
+                <div class="measure-statement">Determines actual disposable cash generated after accounting for manufacturing expenditures.</div>
+                <div class="metrics-box">Operating Cash Flow: -$50.3M | Quarterly Capex: -$27.1M | Free Cash Flow: -$77.4M</div>
+            </div>
+            <div class="analysis-text">
+                Accounting net losses translate into ongoing cash burn. True free cash flow is negative (-$77.4M in Q1 2026) due to capital spending for launch infrastructure and ongoing inventory builds for satellite parts. The business relies on financing activities, specifically issuing new equity, to cover its cash requirements, rather than relying on organic customer receipts.
+            </div>
+            <div class="plain-english-box">
+                📘 <strong>In Plain English:</strong> <strong>Free Cash Flow</strong> represents the literal cash left in a firm's bank account after paying for operations and essential machinery upgrades. Negative free cash flow indicates that the company is spending more money to expand its facilities and develop its rockets than it collects from current operations.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div>
+                <div class="card-header-row">
+                    <h3 class="card-title">7. Dividend Sustainability</h3>
+                    <span class="card-score-badge badge-red">0.0 / 10</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill fill-red" style="width: 0%;"></div></div>
+                <div class="measure-statement">Assesses recurring cash distributions paid out directly back to equity investors.</div>
+                <div class="metrics-box">Dividend Yield: 0.0% | Distribution History: None | Payout Ratio: 0%</div>
+            </div>
+            <div class="analysis-text">
+                Rocket Lab does not offer a dividend program. Given its position in an early-stage aerospace market and the ongoing capital requirements for launching the Neutron rocket, the company reinvests all available cash back into engineering and manufacturing development.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div>
+                <div class="card-header-row">
+                    <h3 class="card-title">8. Management & Capital Allocation</h3>
+                    <span class="card-score-badge badge-green">7.0 / 10</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill fill-green" style="width: 70%;"></div></div>
+                <div class="measure-statement">Tracks leadership's capital deployment record, inside alignment, and asset execution.</div>
+                <div class="metrics-box">CEO: Sir Peter Beck (Founder) | Recent M&A: Mynaric (Laser Comms), Motiv (Robotics)</div>
+            </div>
+            <div class="analysis-text">
+                Founder Peter Beck maintains high alignment and a strong operational track record, steering the company to become the most reliable commercial small-satellite launch option after SpaceX. Management continues to pursue bolt-on acquisitions (Mynaric, Motiv) to capture vertically integrated supply lines. However, utilizing at-the-market equity programs to fund these expansions causes ongoing share dilution for current holders.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div>
+                <div class="card-header-row">
+                    <h3 class="card-title">9. Operational Risks</h3>
+                    <span class="card-score-badge badge-yellow">Risk Factor</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill fill-yellow" style="width: 100%;"></div></div>
+                <div class="measure-statement">Identifies core industrial vulnerabilities that could disrupt operational performance.</div>
+            </div>
+            <div class="analysis-text" style="font-size: 13.5px;">
+                • <strong>Neutron Launch Timeline Dependencies:</strong> The company's long-term growth assumptions rely heavily on the success of the Archimedes engine and the Neutron rocket (scheduled for late 2026/2027). Technical complications or test failures could delay commercial launch dates.<br><br>
+                • <strong>Shareholder Dilution via ATM Programs:</strong> To support a $2.0B liquidity reserve, management frequently issues new equity. Ongoing share issuance dilutes existing stockholders' ownership stakes.<br><br>
+                • <strong>Monopsonistic Monopolist Competition:</strong> Competing against SpaceX's large launch capacity and aggressive rideshare pricing means Rocket Lab faces ongoing pressure to optimize its cost structures to remain competitive.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div>
+                <div class="card-header-row">
+                    <h3 class="card-title">10. Sentiment & Momentum</h3>
+                    <span class="card-score-badge badge-green">8.5 / 10</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill fill-green" style="width: 85%;"></div></div>
+                <div class="measure-statement">Tracks institutional market views and recent backward stock price velocity.</div>
+                <div class="metrics-box">Consensus: Overweight / Buy | Wall Street Target Clusters: $120.00 - $135.00</div>
+            </div>
+            <div class="analysis-text">
+                RKLB exhibits exceptionally strong market momentum, driven by its scheduled inclusion in the Nasdaq-100 Index on June 22, 2026. This has triggered mandatory buying from passive tracking funds. Although the stock recently consolidated from its all-time high of $150.23 down to $107.24, major investment banks (including TD Cowen, Deutsche Bank, and KeyBanc) maintain positive ratings, with price targets ranging from $120 to $135.
+            </div>
+        </div>
+
+    </main>
+
+    <section class="summary-banner">
+        <div class="summary-title">Fundamentals Snapshot: 6.0 / 10</div>
+        <div class="summary-desc">“Solid fundamentals with some mixed areas”</div>
+        <p style="margin: 8px 0 0 0; font-size: 13px; color: #166534; max-width:750px; display:inline-block;">
+            <strong>Weighting Methodology:</strong> This financial profile applies equal 25% weights to the core categories: <strong>Valuation (2.0)</strong>, <strong>Financial Health (9.0)</strong>, <strong>Profitability (3.5)</strong>, and <strong>Growth (9.5)</strong>. The resulting score of 6.0 reflects a company with low structural debt and high top-line growth, balanced by elevated valuation multiples and ongoing operational net losses.
+        </p>
+    </section>
+
+    <section class="viewpoints-container">
+        
+        <div class="viewpoint-column bull-side">
+            <h4 class="viewpoint-header" style="color: var(--green-solid);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
+                Analytical Perspectives: The Bull Case
+            </h4>
+            <ul class="viewpoint-list">
+                <li><strong>Proven Commercial Execution:</strong> The Electron rocket provides a reliable record in small-satellite launch services, establishing the company as a credible independent alternative for commercial and government space missions.</li>
+                <li><strong>Diversified Product Revenue Mix:</strong> Generating nearly 70% of revenue from the Space Systems segment buffers the company against the scheduling variability typical of pure-play launch providers.</li>
+                <li><strong>Substantial Multi-Year Backlog:</strong> A documented $2.2B contract backlog offers visible long-term demand from civil, defense, and national security customers.</li>
+                <li><strong>Robust Balance Sheet Liquidity:</strong> With $1.2B in cash and minimal debt obligations, the company has a strong safety cushion to fund Neutron development through its upcoming milestones.</li>
+            </ul>
+        </div>
+
+        <div class="viewpoint-column bear-side">
+            <h4 class="viewpoint-header" style="color: var(--red-solid);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/></svg>
+                Analytical Perspectives: The Bear Case
+            </h4>
+            <ul class="viewpoint-list">
+                <li><strong>Elevated Valuation Premium:</strong> Trading at a forward Price-to-Sales multiple of approximately 60x requires near-perfect operational execution, leaving little room for project delays or market corrections.</li>
+                <li><strong>Persistent Operating Losses:</strong> Heavy research and development costs for new launch systems continue to generate GAAP net losses, delaying the path to sustainable operational profitability.</li>
+                <li><strong>Ongoing Structural Capital Burn:</strong> Negative free cash flow shows the company remains dependent on frequent capital raises and share issuance to fund its ongoing infrastructure buildout.</li>
+                <li><strong>Concentration & Competitive Pressure:</strong> Operating in a sector influenced by SpaceX's launch capacity and pricing power exposes the company to competitive risks if commercial launch demand normalizes.</li>
+            </ul>
+        </div>
+
+    </section>
+
+    <footer class="disclaimer-box">
+        <h5 class="disclaimer-heading">
+            <span>⚠️</span> EDUCATIONAL DISCLOSURE & SEC COMPLIANT CONTEXT
+        </h5>
+        <p style="margin: 0 0 10px 0; line-height: 1.6;">
+            This analysis is AI-generated educational content, NOT financial advice, and NOT a recommendation to buy, sell, or hold any security.
+        </p>
+        <p style="margin: 0 0 10px 0; line-height: 1.6;">
+            The scores describe the company's financial characteristics only — they are NOT a rating of whether to invest, and should never be interpreted as a buy or sell signal.
+        </p>
+        <p style="margin: 0 0 10px 0; line-height: 1.6;">
+            This should ONLY be used as a PRELIMINARY starting point for your own research — it is NOT a complete or sufficient analysis on its own. A full investment decision requires deeper due diligence, reading the company's actual filings, and considering your personal financial situation.
+        </p>
+        <p style="margin: 0 0 10px 0; line-height: 1.6;">
+            Historical and past performance is NOT indicative of future results. Numbers and trends shown reflect the past and do not guarantee what will happen going forward.
+        </p>
+        <p style="margin: 0 0 10px 0; line-height: 1.6;">
+            The data may be delayed, incomplete, or inaccurate — always verify current figures from primary sources before making any decision.
+        </p>
+        <p style="margin: 0 0 10px 0; line-height: 1.6;">
+            Scores and summaries are simplified models and reflect assumptions that may not suit your goals, risk tolerance, or time horizon. Always do your own research and consult a licensed financial advisor before buying or selling any security.
+        </p>
+    </footer>
+
+</div>
+
+</body>
+</html>

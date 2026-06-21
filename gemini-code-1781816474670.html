@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equity Research Analysis: NuScale Power Corporation (SMR)</title>
+    <style>
+        :root {
+            --bg-canvas: #f1f5f9;
+            --card-surface: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --brand-color: #4f46e5;
+            --brand-light: #e0e7ff;
+            --color-green: #15803d;
+            --color-green-bg: #f0fdf4;
+            --color-yellow: #a16207;
+            --color-yellow-bg: #fefce8;
+            --color-red: #b91c1c;
+            --color-red-bg: #fef2f2;
+            --border-element: #cbd5e1;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-canvas);
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin: 0;
+            padding: 16px;
+        }
+
+        .main-wrapper {
+            max-width: 1040px;
+            margin: 0 auto;
+        }
+
+        /* Executive Summary Header */
+        .header-dashboard {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #ffffff;
+            border-radius: 14px;
+            padding: 28px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .header-info h1 {
+            margin: 0 0 6px 0;
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+
+        .ticker-badge {
+            background-color: var(--brand-color);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .meta-date {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .price-display {
+            font-size: 36px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 12px 0 0 0;
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .price-currency {
+            font-size: 16px;
+            font-weight: 400;
+            color: #94a3b8;
+        }
+
+        .meter-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .meter-svg {
+            width: 130px;
+            height: 130px;
+        }
+
+        .meter-track {
+            fill: none;
+            stroke: #334155;
+            stroke-width: 10;
+        }
+
+        .meter-indicator {
+            fill: none;
+            stroke: var(--color-red);
+            stroke-width: 10;
+            stroke-dasharray: 283;
+            stroke-dashoffset: 186.78; /* Reflects 3.4/10 Score */
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: center;
+            transition: stroke-dashoffset 0.8s ease;
+        }
+
+        .meter-value {
+            font-size: 24px;
+            font-weight: 800;
+            fill: #ffffff;
+        }
+
+        .meter-caption {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        /* Infographic Charts */
+        .infographics-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        @media(min-width: 768px) {
+            .infographics-row {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .chart-box {
+            background-color: var(--card-surface);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .chart-box h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin: 0 0 16px 0;
+            text-align: center;
+            width: 100%;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 8px;
+        }
+
+        /* Factor Analysis Matrix */
+        .factor-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        @media(min-width: 768px) {
+            .factor-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .factor-card {
+            background-color: var(--card-surface);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .factor-title-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .factor-name {
+            font-size: 17px;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .score-pill {
+            font-size: 13px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        .pill-green { color: var(--color-green); background-color: var(--color-green-bg); }
+        .pill-yellow { color: var(--color-yellow); background-color: var(--color-yellow-bg); }
+        .pill-red { color: var(--color-red); background-color: var(--color-red-bg); }
+
+        .bar-background {
+            background-color: #f1f5f9;
+            height: 7px;
+            border-radius: 4px;
+            width: 100%;
+            margin-bottom: 14px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .fill-green { background-color: var(--color-green); }
+        .fill-yellow { background-color: var(--color-yellow); }
+        .fill-red { background-color: var(--color-red); }
+
+        .definition-statement {
+            font-style: italic;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .data-summary-box {
+            background-color: #f8fafc;
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+            margin-bottom: 12px;
+            color: #334155;
+            border-left: 3px solid #64748b;
+        }
+
+        .analysis-narrative {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            flex-grow: 1;
+        }
+
+        /* In Plain English Styling */
+        .plain-english-block {
+            background-color: var(--brand-light);
+            border: 1px solid #c7d2fe;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 13px;
+            color: #3730a3;
+        }
+
+        .plain-english-block strong {
+            color: var(--brand-color);
+        }
+
+        /* Core Summary Banner */
+        .summary-banner-box {
+            background-color: var(--color-red-bg);
+            border: 1px solid #fca5a5;
+            border-radius: 12px;
+            padding: 22px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .summary-banner-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #991b1b;
+            margin-bottom: 6px;
+        }
+
+        .summary-banner-desc {
+            font-size: 16px;
+            color: var(--color-red);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .weighting-note {
+            margin: 0;
+            font-size: 13px;
+            color: #7f1d1d;
+            max-width: 800px;
+            display: inline-block;
+        }
+
+        /* Two-Column Cross Perspectives */
+        .perspectives-wrapper {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 36px;
+        }
+
+        @media(min-width: 768px) {
+            .perspectives-wrapper {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .perspective-column {
+            background-color: var(--card-surface);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .perspective-column.bullish-view { border-top: 4px solid var(--color-green); }
+        .perspective-column.bearish-view { border-top: 4px solid var(--color-red); }
+
+        .perspective-head {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .perspective-points {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .perspective-points li {
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        /* Institutional Disclaimer Box */
+        .regulatory-disclaimer {
+            background-color: #e2e8f0;
+            border: 1px solid var(--border-element);
+            border-radius: 12px;
+            padding: 24px;
+            font-size: 12.5px;
+            color: var(--text-secondary);
+            margin-top: 40px;
+        }
+
+        .regulatory-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-top: 0;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+
+    <header class="header-dashboard">
+        <div class="header-info">
+            <h1>NuScale Power Corporation <span class="ticker-badge">NYSE: SMR</span></h1>
+            <div class="meta-date">Analysis Snapshot: June 2026 | Sector: Advanced Nuclear Technology & Heavy Industrial</div>
+            <div class="price-display">$11.74 <span class="price-currency">USD</span></div>
+        </div>
+        <div class="meter-container">
+            <svg class="meter-svg" viewBox="0 0 100 100">
+                <circle class="meter-track" cx="50" cy="50" r="45"></circle>
+                <circle class="meter-indicator" cx="50" cy="50" r="45"></circle>
+                <text class="meter-value" cx="50" cy="56" text-anchor="middle">3.4</text>
+            </svg>
+            <div class="meter-caption">Fundamentals Snapshot<br><span style="color:var(--color-red);">Pre-Commercial Scale Risks</span></div>
+        </div>
+    </header>
+
+    <section class="infographics-row">
+        <div class="chart-box">
+            <h3>Annual Revenue Scale ($ Millions)</h3>
+            <svg width="220" height="150" viewBox="0 0 220 150">
+                <line x1="35" y1="110" x2="200" y2="110" stroke="#cbd5e1" stroke-width="1"/>
+                <line x1="35" y1="70" x2="200" y2="70" stroke="#f1f5f9" stroke-dasharray="2" stroke-width="1"/>
+                <line x1="35" y1="30" x2="200" y2="30" stroke="#f1f5f9" stroke-dasharray="2" stroke-width="1"/>
+                
+                <rect x="50" y="85" width="22" height="25" fill="#94a3b8"/>
+                <text x="61" y="125" font-size="10" text-anchor="middle" fill="#64748b">2024</text>
+                <text x="61" y="78" font-size="9" text-anchor="middle" font-weight="600">$37.0</text>
+                
+                <rect x="100" y="89" width="22" height="21" fill="#818cf8"/>
+                <text x="111" y="125" font-size="10" text-anchor="middle" fill="#64748b">2025</text>
+                <text x="111" y="82" font-size="9" text-anchor="middle" font-weight="600">$31.5</text>
+                
+                <rect x="150" y="52" width="22" height="58" fill="#4f46e5"/>
+                <text x="161" y="125" font-size="10" text-anchor="middle" fill="#64748b">2026E</text>
+                <text x="161" y="45" font-size="9" text-anchor="middle" font-weight="600" fill="#4f46e5">$86.3</text>
+            </svg>
+        </div>
+
+        <div class="chart-box">
+            <h3>Q1 2026 Cost Overheads ($ Millions)</h3>
+            <svg width="220" height="150" viewBox="0 0 220 150">
+                <circle cx="110" cy="70" r="45" fill="none" stroke="#f1f5f9" stroke-width="20"/>
+                <circle cx="110" cy="70" r="45" fill="none" stroke="#ef4444" stroke-width="20" stroke-dasharray="183 100" stroke-dashoffset="0"/>
+                <circle cx="110" cy="70" r="45" fill="none" stroke="#f59e0b" stroke-width="20" stroke-dasharray="100 183" stroke-dashoffset="183"/>
+                
+                <text x="110" y="74" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">Pre-Commercial</text>
+                <rect x="35" y="130" width="10" height="10" fill="#ef4444"/>
+                <text x="50" y="139" font-size="10" fill="#475569">SG&A: $24.8M</text>
+                <rect x="125" y="130" width="10" height="10" fill="#f59e0b"/>
+                <text x="140" y="139" font-size="10" fill="#475569">R&D: $12.8M</text>
+            </svg>
+        </div>
+
+        <div class="chart-box">
+            <h3>Price-to-Sales (P/S Multiple) Contrast</h3>
+            <svg width="220" height="150" viewBox="0 0 220 150">
+                <line x1="75" y1="20" x2="75" y2="120" stroke="#475569" stroke-width="1.5"/>
+                
+                <text x="65" y="45" font-size="10" text-anchor="end" font-weight="600">SMR TTM</text>
+                <rect x="75" y="35" width="120" height="14" fill="#b91c1c"/>
+                <text x="200" y="46" font-size="10" font-weight="700" fill="#b91c1c">136.0x</text>
+
+                <text x="65" y="75" font-size="10" text-anchor="end">Clean Tech</text>
+                <rect x="75" y="65" width="25" height="14" fill="#ca8a04"/>
+                <text x="105" y="76" font-size="10" fill="#475569">8.5x</text>
+
+                <text x="65" y="105" font-size="10" text-anchor="end">Industrial</text>
+                <rect x="75" y="95" width="8" height="14" fill="#94a3b8"/>
+                <text x="88" y="106" font-size="10" fill="#475569">1.8x</text>
+            </svg>
+        </div>
+    </section>
+
+    <main class="factor-grid">
+
+        <div class="factor-card">
+            <div>
+                <div class="factor-title-bar">
+                    <h3 class="factor-name">1. Business Model & Moat</h3>
+                    <span class="score-pill pill-yellow">5.5 / 10</span>
+                </div>
+                <div class="bar-background"><div class="bar-fill fill-yellow" style="width: 55%;"></div></div>
+                <div class="definition-statement">Measures what the company does, how it generates revenue, and its long-term competitive advantages.</div>
+                <div class="data-summary-box">NRC Status: Only Approved 50MWe SMR Design | First Expected Project Deployment: 2033 (Romania)</div>
+            </div>
+            <div class="analysis-narrative">
+                NuScale acts as a foundational developer of Small Modular Reactors (SMRs), seeking to supply scalable, factory-fabricated nuclear modules primarily to power data centers and municipal grids. Its core competitive advantage stems from regulatory validation: it holds the first and only Small Modular Reactor design certification approved by the U.S. Nuclear Regulatory Commission (NRC). However, because the technology remains pre-commercial, the company has no operating physical units in operation globally.
+            </div>
+        </div>
+
+        <div class="factor-card">
+            <div>
+                <div class="factor-title-bar">
+                    <h3 class="factor-name">2. Valuation Multiples</h3>
+                    <span class="score-pill pill-red">1.5 / 10</span>
+                </div>
+                <div class="factor-grid-bar bar-background"><div class="bar-fill fill-red" style="width: 15%;"></div></div>
+                <div class="definition-statement">Measures if the stock is valued cheaply or expensively compared to operational metrics and peer history.</div>
+                <div class="data-summary-box">Trailing P/S: ~136.0x | Forward P/S (2026E): ~49.7x | Net Income (TTM): -$355.8 Million</div>
+            </div>
+            <div class="analysis-narrative">
+                The equity is priced at an extreme premium across current trailing metrics, driven by high speculative interest in next-generation data center power alternatives. With a market capitalization near $4.29 billion against minor historical sales, traditional price-to-earnings (P/E) and cash multiples remain negative and highly distorted, reflecting embedded assumptions of massive multi-decade layout growth rather than current earnings baseline.
+            </div>
+            <div class="plain-english-block">
+                📘 <strong>In Plain English:</strong> The <strong>Price-to-Sales (P/S) Ratio</strong> compares the aggregate value of a company to its absolute sales revenue. A trailing P/S of 136x signifies that public market buyers are giving the company $136.00 of valuation upfront for every single dollar of historical revenue pulled into the business.
+            </div>
+        </div>
+
+        <div class="factor-card">
+            <div>
+                <div class="factor-title-bar">
+                    <h3 class="factor-name">3. Profitability Profile</h3>
+                    <span class="score-pill pill-red">2.0 / 10</span>
+                </div>
+                <div class="bar-background"><div class="bar-fill fill-red" style="width: 20%;"></div></div>
+                <div class="definition-statement">Evaluates cost efficiencies in generating cash flows and return metrics on allocated equity capital.</div>
+                <div class="data-summary-box">Q1 2026 Net Loss: -$44.02M | Net Profit Margin: Negative | ROIC / ROE: Heavily Negative</div>
+            </div>
+            <div class="analysis-narrative">
+                Operational margins remain unviable due to the company's early development stage. In the first quarter of 2026, the company posted a net loss of $44.02 million, reflecting the lack of commercial revenues against heavy engineering outlays, research expenses, and regulatory administrative costs. Standard efficiency ratios like Return on Invested Capital (ROIC) are negative as overhead systematically drains capital reserves.
+            </div>
+            <div class="plain-english-block">
+                📘 <strong>In Plain English:</strong> <strong>ROIC (Return on Invested Capital)</strong> tracks how efficiently a business translates cash invested into its infrastructure into bottom-line profits. For a pre-commercial business like SMR, this metric remains negative because capital is continuously spent on technical design approvals before generating operational cash inflows.
+            </div>
+        </div>
+
+        <div class="factor-card">
+            <div>
+                <div class="factor-title-bar">
+                    <h3 class="factor-name">4. Growth Velocity</h3>
+                    <span class="score-pill pill-yellow">4.0 / 10</span>
+                </div>
+                <div class="bar-background"><div class="bar-fill fill-yellow" style="width: 40%;"></div></div>
+                <div class="definition-statement">Evaluates the historical change and consensus forward expectations for revenues and absolute net earnings.</div>
+                <div class="data-summary-box">FY2025 Revenue Change: -15% ($31.5M vs $37.0M) | Consensus FY2026 Revenue Target: ~$86.3M</div>
+            </div>
+            <div class="analysis-narrative">
+                NuScale's historical growth path is lumpy and volatile. Full-year 2025 revenue declined relative to 2024 following the high-profile termination of its domestic Carbon Free Power Project (CFPP) due to inflationary cost escalations. While forward multi-year consensus estimates project a top-line acceleration to $86.3M for the full year 2026, baseline near-term growth remains highly erratic.
+            </div>
+        </div>
+
+        <div class="factor-card">
+            <div>
+                <div class="factor-title-bar">
+                    <h3 class="factor-name">5. Balance Sheet Strength</h3>
+                    <span class="score-pill pill-yellow">6.0 / 10</span>
+                </div>
+                <div class="bar-background"><div class="bar-fill fill-yellow" style="width: 60%;"></div></div>
+                <div class="definition-statement">Measures the structural capacity to sustain operations based on available cash reserves and debt leverage.</div>
+                <div class="data-summary-box">Institutional Debt: Low / Minimal | Cash Runway Target: Extended into Second Half of 2027</div>
+            </div>
+            <div class="analysis-narrative">
+                The absolute balance sheet contains minimal long-term structural debt, protecting NuScale from near-term insolvency risks. Management's recent implementation of aggressive internal cost-reduction frameworks and personnel consolidation has extended the internal operational cash runway into the second half of 2027. However, maintaining long-term financial stability remains dependent on regular capital market equity issuance or partner funding injections.
+            </div>
+        </div>
+
+        <div class="factor-card">
+            <div>
+                <div class="factor-title-bar">
+                    <h3 class="factor-name">6. Cash Flow Dynamics</h3>
+                    <span class="score-pill pill-red">2.0 / 10</span>
+                </div>
+                <div class="bar-background"><div class="bar-fill fill-red" style="width: 20%;"></div></div>
+                <div class="definition-statement">Tracks absolute cash surpluses or deficits remaining after funding daily operational outlays and assets.</div>
+                <div class="data-summary-box">Free Cash Flow: Consistently Negative | Primary Inflow Driver: Equity Dilution & Capital Raises</div>
+            </div>
+            <div class="analysis-narrative">
+                Free Cash Flow continues to show structural deficits, moving in tandem with ongoing accounting net losses. The firm burns substantial physical cash every quarter to advance engineering designs and support licensing requirements. Because organic operations do not create positive cash flows, NuScale relies on equity financing programs, creating ongoing risk of dilution for current shareholders.
+            </div>
+            <div class="plain-english-block">
+                📘 <strong>In Plain English:</strong> <strong>Free Cash Flow (FCF)</strong> represents the actual remaining cash a firm holds in its bank account after paying for all operations and physical gear upgrades. A negative FCF means the company spends more cash than it generates, requiring outside funding to bridge the gap.
+            </div>
+        </div>
+
+        <div class="factor-card">
+            <div>
+                <div class="factor-title-bar">
+                    <h3 class="factor-name">7. Dividend Sustainability</h3>
+                    <span class="score-pill pill-red">0.0 / 10</span>
+                </div>
+                <div class="bar-background"><div class="bar-fill fill-red" style="width: 0%;"></div></div>
+                <div class="definition-statement">Assesses recurring cash distributions paid out directly back to equity shareholders.</div>
+                <div class="data-summary-box">Dividend Yield: 0.0% | Payout Allocation: 0.0% | Distribution Status: None</div>
+            </div>
+            <div class="analysis-narrative">
+                NuScale Power does not distribute a cash dividend. Given the company's status as a pre-commercial enterprise focused on extending its operational runway, all financial resources are directed entirely toward basic corporate funding, R&D, and regulatory compliance.
+            </div>
+        </div>
+
+        <div class="factor-card">
+            <div>
+                <div class="factor-title-bar">
+                    <h3 class="factor-name">8. Capital Allocation Performance</h3>
+                    <span class="score-pill pill-yellow">4.5 / 10</span>
+                </div>
+                <div class="bar-background"><div class="bar-fill fill-yellow" style="width: 45%;"></div></div>
+                <div class="definition-statement">Tracks executive capital deployment track record, operational pivots, and insider alignment.</div>
+                <div class="data-summary-box">Key Allocation Shift: Domestic CFPP Cancellation | Strategic Focus: Global ENTRA1 Partnership</div>
+            </div>
+            <div class="analysis-narrative">
+                Management's capital execution track record is mixed, highlighted by the strategic cancellation of its cornerstone domestic commercial pilot project due to escalating inflation and power-cost concerns. Executive focus has shifted toward securing global supply agreements (such as a 463 MWe target pipeline in Romania via partner ENTRA1 Energy). Institutional alignment remains complex, given recent large-scale stake sales by principal corporate backing entities like Fluor Corporation.
+            </div>
+        </div>
+
+        <div class="factor-card">
+            <div>
+                <div class="factor-title-bar">
+                    <h3 class="factor-name">9. Core Corporate Risk Profile</h3>
+                    <span class="score-pill pill-yellow">Risk Assessment Matrix</span>
+                </div>
+                <div class="bar-background"><div class="bar-fill fill-yellow" style="width: 100%;"></div></div>
+                <div class="definition-statement">Identifies distinct external hazards and industrial dependencies facing operations.</div>
+            </div>
+            <div class="analysis-narrative" style="font-size: 13.5px;">
+                • <strong>Extended Commercial Timelines:</strong> SMR deployment involves lengthy development horizons; the company's primary target deployment in Romania is scheduled for 2033, creating a long multi-year window exposed to potential execution delays.<br><br>
+                • <strong>Financing & Share Dilution Demands:</strong> With an operational cash runway running into late 2027, the company will require ongoing outside capital injections or equity issuance to fund development, posing structural dilution risks.<br><br>
+                • <strong>Customer Pipeline Constraints:</strong> Developing modular nuclear energy depends on securing firm commitments from utilities and enterprise data center builders. Project cancellations or budget adjustments present meaningful operational risks.
+            </div>
+        </div>
+
+        <div class="factor-card">
+            <div>
+                <div class="factor-title-bar">
+                    <h3 class="factor-name">10. Market Sentiment & Velocity</h3>
+                    <span class="score-pill pill-yellow">5.0 / 10</span>
+                </div>
+                <div class="bar-background"><div class="bar-fill fill-yellow" style="width: 50%;"></div></div>
+                <div class="definition-statement">Tracks professional analyst ratings consensus and asset market price trends.</div>
+                <div class="data-summary-box">Wall Street Consensus: Hold (55% Neutral, 33% Buy, 11% Sell) | Price Target Average: ~$15.09</div>
+            </div>
+            <div class="analysis-narrative">
+                The institutional analyst community maintains a highly cautious, wait-and-see consensus view on the company's prospects. Market momentum shows high volatility; the stock price is down roughly 33% year-to-date in 2026, consolidating around the $11.74 range. This follows a period of significant retail and speculative interest in late 2025 that drove the stock to an all-time high of $53.43.
+            </div>
+        </div>
+
+    </main>
+
+    <section class="summary-banner-box">
+        <div class="summary-banner-title">Fundamentals Snapshot Score: 3.4 / 10</div>
+        <div class="summary-banner-desc">“Weaker fundamentals with several areas of concern”</div>
+        <p class="weighting-note">
+            <strong>Analytical Weighting Rationale:</strong> The aggregate snapshot score prioritizes core columns: <strong>Valuation (25%)</strong>, <strong>Financial Health (25%)</strong>, <strong>Profitability (25%)</strong>, and <strong>Growth (25%)</strong> equally. While low corporate debt provides a measure of balance sheet protection, the overall score is impacted by an extended pre-commercial timeline, structural cash burn, lumpy historical revenue, and premium valuation multiples.
+        </p>
+    </section>
+
+    <section class="perspectives-wrapper">
+        
+        <div class="perspective-column bullish-view">
+            <h4 class="perspective-head" style="color: var(--color-green);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
+                Analytical Perspectives: The Bull Case
+            </h4>
+            <ul class="perspective-points">
+                <li><strong>First-Mover Regulatory Moat:</strong> NuScale possesses a structural first-mover asset advantage as the only enterprise with a U.S. NRC-approved design certification for a small modular reactor module.</li>
+                <li><strong>Secular AI Data Center Tailwinds:</strong> The rapid buildout of next-generation machine learning infrastructures creates long-term demand for high-capacity, zero-emission base-load electrical power independent of grid constraints.</li>
+                <li><strong>Low Long-Term Operational Leverage:</strong> A debt-light baseline capital design isolates the company from traditional balance sheet bankruptcy risks, allowing flexibility while advancing design updates.</li>
+                <li><strong>International Commercial Footprint:</strong> Global partnerships, including the 463 MWe target plant layout in Romania, provide long-term commercialization pipelines outside competitive domestic utility markets.</li>
+            </ul>
+        </div>
+
+        <div class="perspective-column bearish-view">
+            <h4 class="perspective-head" style="color: var(--color-red);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/></svg>
+                Analytical Perspectives: The Bear Case
+            </h4>
+            <ul class="perspective-points">
+                <li><strong>Aggressive Embedded Valuation Multiples:</strong> Paying a P/S multiple above 130x implies high execution expectations, exposing the stock to valuation pressure if long-term commercial goals face delays.</li>
+                <li><strong>Significant Commercialization Lag:</strong> With first commercial operations for major international ventures projected for 2033, the company faces an extended multi-year pre-revenue phase.</li>
+                <li><strong>Persistent Operational Cash Burn:</strong> Structurally negative free cash flows force a continuous drawdown of capital reserves, pointing to ongoing financing requirements.</li>
+                <li><strong>History of Contract Terminations:</strong> The past cancellation of the key domestic CFPP project due to inflationary cost increases underscores the capital execution risks inherent to large nuclear projects.</li>
+            </ul>
+        </div>
+
+    </section>
+
+    <footer class="regulatory-disclaimer">
+        <h5 class="regulatory-title">
+            <span>⚠️</span> REGULATORY DISCLOSURE & PROFESSIONAL INVESTING DISCLAIMER
+        </h5>
+        <p style="margin: 0 0 12px 0; line-height: 1.6;">
+            This profile is prepared exclusively as AI-generated educational content to demonstrate fundamental corporate research frameworks. It does <strong>NOT</strong> constitute personalized financial advice, a formal investment recommendation, or an endorsement to buy, sell, or hold any security, commodity, derivative, or financial product mentioned.
+        </p>
+        <p style="margin: 0 0 12px 0; line-height: 1.6;">
+            The numerical assignments and snapshot scores assess the company's objective financial characteristics based on current public disclosures. They are <strong>NOT</strong> an evaluation of investment quality, attractiveness, or market timing, and must never be used as transactional buy or sell indicators.
+        </p>
+        <p style="margin: 0 0 12px 0; line-height: 1.6;">
+            This factor breakdown should serve <strong>ONLY</strong> as a preliminary educational starting point for your own research. It is not a complete or sufficient analysis to support an investment thesis. A proper investment decision requires comprehensive due diligence, checking primary corporate investor communications, verifying official SEC disclosures (including Forms 10-K, 10-Q, and risk disclosures), and factoring in your personal financial situation, risk profile, and investment horizon.
+        </p>
+        <p style="margin: 0 0 12px 0; line-height: 1.6;">
+            <strong>Historical performance trends offer no guarantee of future operational metrics.</strong> Advanced industrial technology markets change quickly, and figures shown reflect past periods that may diverge significantly from subsequent corporate performance.
+        </p>
+        <p style="margin: 0 0 12px 0; line-height: 1.6;">
+            The underlying analytical data may be subject to market delays, transcription gaps, or reporting inaccuracies. Investors must verify all stock prices, financial statements, and regulatory timelines directly from primary company filings before allocating capital. The automated score metrics rely on basic models that may not suit your specific risk tolerance or asset objectives. Always execute independent research and consult a licensed financial professional before making financial market investments.
+        </p>
+    </footer>
+
+</div>
+
+</body>
+</html>

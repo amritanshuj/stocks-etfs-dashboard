@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equity Research Report: Nebius Group N.V. (NBIS)</title>
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --accent-blue: #2563eb;
+            --accent-blue-light: #eff6ff;
+            --green-solid: #10b981;
+            --green-light: #ecfdf5;
+            --yellow-solid: #f59e0b;
+            --yellow-light: #fffbeb;
+            --red-solid: #ef4444;
+            --red-light: #fef2f2;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.5;
+            margin: 0;
+            padding: 16px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header Dashboard */
+        .dashboard-header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .header-left h1 {
+            margin: 0 0 4px 0;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .ticker-badge {
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+
+        .price-meta {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .price-large {
+            font-size: 32px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 8px 0 0 0;
+        }
+
+        .gauge-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .gauge-svg {
+            width: 120px;
+            height: 120px;
+        }
+
+        .gauge-bg {
+            fill: none;
+            stroke: #334155;
+            stroke-width: 10;
+        }
+
+        .gauge-fill {
+            fill: none;
+            stroke: var(--yellow-solid);
+            stroke-width: 10;
+            stroke-dasharray: 283;
+            stroke-dashoffset: 121.7; /* Reflects 5.7/10 score */
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: center;
+            transition: stroke-dashoffset 1s ease-in-out;
+        }
+
+        .gauge-text {
+            font-size: 22px;
+            font-weight: 700;
+            fill: #ffffff;
+            font-family: sans-serif;
+        }
+
+        .gauge-label {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* Grid Scorecard */
+        .scorecard-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        @media(min-width: 768px) {
+            .scorecard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .score-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .card-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        .card-score-badge {
+            font-size: 14px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .badge-green { color: var(--green-solid); background-color: var(--green-light); }
+        .badge-yellow { color: var(--yellow-solid); background-color: var(--yellow-light); }
+        .badge-red { color: var(--red-solid); background-color: var(--red-light); }
+
+        .progress-bar-bg {
+            background-color: var(--border-color);
+            height: 8px;
+            border-radius: 4px;
+            width: 100%;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .fill-green { background-color: var(--green-solid); }
+        .fill-yellow { background-color: var(--yellow-solid); }
+        .fill-red { background-color: var(--red-solid); }
+
+        .measure-statement {
+            font-style: italic;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .metrics-box {
+            background-color: var(--bg-primary);
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: monospace;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            border-left: 3px solid var(--text-muted);
+        }
+
+        .analysis-text {
+            font-size: 14px;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        /* Callout Boxes */
+        .plain-english-box {
+            background-color: var(--accent-blue-light);
+            border: 1px solid #dbeafe;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #1e40af;
+        }
+
+        .plain-english-box strong {
+            color: #1d4ed8;
+        }
+
+        /* Charts Section */
+        .charts-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        @media(min-width: 900px) {
+            .charts-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .chart-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .chart-card h3 {
+            font-size: 14px;
+            margin: 0 0 16px 0;
+            color: var(--text-muted);
+            text-align: center;
+            width: 100%;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        /* Summary Banner */
+        .summary-banner {
+            background-color: var(--yellow-light);
+            border: 1px solid #fde68a;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .summary-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 4px;
+        }
+
+        .summary-desc {
+            font-size: 15px;
+            color: #b45309;
+            font-weight: 600;
+        }
+
+        /* Two Column Considerations Section */
+        .viewpoints-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        @media(min-width: 768px) {
+            .viewpoints-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .viewpoint-column {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .viewpoint-column.bull-side { border-top: 4px solid var(--green-solid); }
+        .viewpoint-column.bear-side { border-top: 4px solid var(--red-solid); }
+
+        .viewpoint-header {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .viewpoint-list {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .viewpoint-list li {
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+
+        /* Disclaimer Styling */
+        .disclaimer-box {
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 40px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .disclaimer-heading {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-top: 0;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="dashboard-header">
+        <div class="header-left">
+            <h1>Nebius Group N.V. <span class="ticker-badge">NASDAQ: NBIS</span></h1>
+            <div class="price-meta">Data Core Cutoff: June 2026 | Industry Peers: Specialized AI Cloud Infrastructure / Neoclouds</div>
+            <div class="price-large">$286.69 <span style="font-size:14px; font-weight:normal; color:#94a3b8;">USD</span></div>
+        </div>
+        <div class="gauge-container">
+            <svg class="gauge-svg" viewBox="0 0 100 100">
+                <circle class="gauge-bg" cx="50" cy="50" r="45"></circle>
+                <circle class="gauge-fill" cx="50" cy="50" r="45"></circle>
+                <text class="gauge-text" cx="50" cy="55" text-anchor="middle">5.7</text>
+            </svg>
+            <div class="gauge-label">Fundamentals Snapshot<br><span style="color:#f59e0b;">Mixed / Early-Stage Scale</span></div>
+        </div>
+    </header>
+
+    <section class="charts-container">
+        <div class="chart-card">
+            <h3>Annualized Revenue Scale ($ Millions)</h3>
+            <svg width="220" height="160" viewBox="0 0 220 160">
+                <line x1="40" y1="120" x2="200" y2="120" stroke="#e2e8f0" stroke-width="1"/>
+                <line x1="40" y1="75" x2="200" y2="75" stroke="#e2e8f0" stroke-dasharray="3" stroke-width="1"/>
+                <line x1="40" y1="30" x2="200" y2="30" stroke="#e2e8f0" stroke-dasharray="3" stroke-width="1"/>
+                <rect x="55" y="117" width="25" height="3" fill="#94a3b8"/>
+                <text x="67.5" y="135" font-size="10" text-anchor="middle" fill="#475569">2023</text>
+                <text x="67.5" y="112" font-size="9" text-anchor="middle" font-weight="600">$21</text>
+                
+                <rect x="105" y="105" width="25" height="15" fill="#3b82f6"/>
+                <text x="117.5" y="135" font-size="10" text-anchor="middle" fill="#475569">2025</text>
+                <text x="117.5" y="100" font-size="9" text-anchor="middle" font-weight="600">$530</text>
+                
+                <rect x="155" y="30" width="25" height="90" fill="#2563eb"/>
+                <text x="167.5" y="135" font-size="10" text-anchor="middle" fill="#475569">2026E</text>
+                <text x="167.5" y="24" font-size="9" text-anchor="middle" font-weight="600" fill="#2563eb">$3,375</text>
+                
+                <line x1="40" y1="120" x2="200" y2="120" stroke="#475569" stroke-width="1.5"/>
+            </svg>
+        </div>
+
+        <div class="chart-card">
+            <h3>Q1 2026 Core Profitability Disconnect</h3>
+            <svg width="220" height="160" viewBox="0 0 220 160">
+                <rect x="40" y="35" width="45" height="85" fill="#10b981" rx="2"/>
+                <text x="62.5" y="75" font-size="12" font-weight="700" fill="white" text-anchor="middle">74%</text>
+                <text x="62.5" y="135" font-size="10" text-anchor="middle" fill="#475569" font-weight="600">Gross Margin</text>
+                
+                <rect x="135" y="120" width="45" height="25" fill="#ef4444" rx="2"/>
+                <text x="157.5" y="135" font-size="10" text-anchor="middle" fill="#475569" font-weight="600">Operating Mgn</text>
+                <text x="157.5" y="112" font-size="11" font-weight="700" fill="#ef4444" text-anchor="middle">-32%</text>
+                
+                <line x1="20" y1="120" x2="200" y2="120" stroke="#475569" stroke-width="1"/>
+            </svg>
+        </div>
+
+        <div class="chart-card">
+            <h3>Price-to-Sales (Forward P/S) Comparison</h3>
+            <svg width="220" height="160" viewBox="0 0 220 160">
+                <line x1="80" y1="40" x2="200" y2="40" stroke="#e2e8f0" stroke-width="1"/>
+                <line x1="80" y1="80" x2="200" y2="80" stroke="#e2e8f0" stroke-width="1"/>
+                <line x1="80" y1="120" x2="200" y2="120" stroke="#e2e8f0" stroke-width="1"/>
+                
+                <text x="70" y="45" font-size="10" text-anchor="end" font-weight="600">NBIS (Fwd)</text>
+                <rect x="80" y="35" width="110" height="12" fill="#ef4444"/>
+                <text x="195" y="45" font-size="10" font-weight="700">21.5x</text>
+
+                <text x="70" y="85" font-size="10" text-anchor="end">AI Peer Avg</text>
+                <rect x="80" y="75" width="75" height="12" fill="#f59e0b"/>
+                <text x="160" y="85" font-size="10">15.0x</text>
+
+                <text x="70" y="125" font-size="10" text-anchor="end">Legacy Cloud</text>
+                <rect x="80" y="115" width="35" height="12" fill="#94a3b8"/>
+                <text x="120" y="125" font-size="10">7.0x</text>
+                
+                <line x1="80" y1="20" x2="80" y2="140" stroke="#475569" stroke-width="1.5"/>
+            </svg>
+        </div>
+    </section>
+
+    <main class="scorecard-grid">
+
+        <div class="score-card">
+            <div class="card-header-row">
+                <h3 class="card-title">1. Business Model & Moat</h3>
+                <span class="card-score-badge badge-yellow">6 / 10</span>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill fill-yellow" style="width: 60%;"></div></div>
+            <div class="measure-statement">Measures what the firm does, how it generates revenue, and its long-term competitive advantages.</div>
+            <div class="metrics-box">Core Segments: AI Cloud/GPU Clusters (98% Rev) | Core Asset Footprint: 20K GPUs scaling to 240K target (2027)</div>
+            <div class="analysis-text">
+                Nebius operates as a pure-play AI cloud infrastructure platform (GPU-as-a-Service) following the total corporate divestment of its legacy Russian internet operations (former Yandex N.V.) in 2024. While a $2B hardware partnership commitment from Nvidia provides supply pipeline stability, structural customer switching costs remain naturally low in standard compute provision, and competition against hyper-scalers remains intensely fluid.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div class="card-header-row">
+                <h3 class="card-title">2. Valuation Multiples</h3>
+                <span class="card-score-badge badge-red">2 / 10</span>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill fill-red" style="width: 20%;"></div></div>
+            <div class="measure-statement">Measures whether the share price is cheap or expensive relative to base financial performance and industry peers.</div>
+            <div class="metrics-box">Trailing P/S: ~83.2x | Forward P/S (FY26): ~21.5x | Adjusted Forward P/E: Negative (Normalized Net Loss)</div>
+            <div class="analysis-text">
+                The market prices Nebius at an exceptional premium. The trailing Price-to-Sales multiple reflects a structural distortion due to the historic transition phase, but even on a forward-looking basis, its forward P/S ratio represents an aggressive premium over the broader software and traditional infrastructure cohorts, pricing in perfect expansion execution.
+            </div>
+            <div class="plain-english-box">
+                📘 <strong>In Plain English:</strong> The <strong>Price-to-Sales (P/S) Ratio</strong> compares the company's stock price to its sales revenues. A P/S of 83.2x means investors are paying $83.20 for every single dollar of revenue the company historically pulled in, indicating extreme growth expectations.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div class="card-header-row">
+                <h3 class="card-title">3. Profitability Profile</h3>
+                <span class="card-score-badge badge-yellow">4 / 10</span>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill fill-yellow" style="width: 40%;"></div></div>
+            <div class="measure-statement">Evaluates how efficiently revenue turns into profits across margins and returns on capital.</div>
+            <div class="metrics-box">Q1 2026 Gross Margin: 74.0% | Core Operating Margin: -32.1% | ROE/ROIC: Structurally Negative (Adjusted)</div>
+            <div class="analysis-text">
+                Nebius displays a significant profitability divergence. The core business extracts strong top-line unit economics, hitting a 74% gross margin as compute clusters come online. However, massive ongoing infrastructure depreciation ($212M in Q1 2026 alone) and deep corporate overhead keep core operating margins firmly in negative territory, resulting in a negative normalized Return on Invested Capital.
+            </div>
+            <div class="plain-english-box">
+                📘 <strong>In Plain English:</strong> <strong>ROIC (Return on Invested Capital)</strong> measures how much profit a company makes for every dollar of debt and equity capital put into it. A negative adjusted ROIC means the company's early massive setup costs are outstripping its current normalized operating cash generation.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div class="card-header-row">
+                <h3 class="card-title">4. Growth Velocity</h3>
+                <span class="card-score-badge badge-green">9 / 10</span>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill fill-green" style="width: 90%;"></div></div>
+            <div class="measure-statement">Evaluates the expansion speed of absolute revenues and earnings over historical and forward periods.</div>
+            <div class="metrics-box">Q1 2026 Revenue Growth YoY: +684% | Consensus 3-Yr Revenue Compound: +46.7% per annum</div>
+            <div class="analysis-text">
+                The absolute growth metrics are high, driven directly by global shortages in specialized AI computing power. Revenue surged from $50.9M in Q1 2025 to $399.0M in Q1 2026. Forward consensus forecasts indicate a dramatic scaling curve, with full-year revenue expected to move from $530M in 2025 to over $3.3B for fiscal year 2026.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div class="card-header-row">
+                <h3 class="card-title">5. Balance Sheet & Financial Health</h3>
+                <span class="card-score-badge badge-green">8 / 10</span>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill fill-green" style="width: 80%;"></div></div>
+            <div class="measure-statement">Measures the company's capability to withstand economic distress and cover long-term debt liabilities.</div>
+            <div class="metrics-box">Debt-to-Equity Ratio: &lt; 0.20x | Current Ratio: &gt; 2.1x | Capital Backstops: $2B Nvidia Investment Commit</div>
+            <div class="analysis-text">
+                Nebius holds a highly liquid current balance sheet with minimal institutional debt. By utilizing equity private placements, treasury asset sales, and strategic investment inputs, management has protected the firm against typical bankruptcy triggers during its heavy infrastructure build-out phase. Short-term assets exceed short-term obligations comfortably.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div class="card-header-row">
+                <h3 class="card-title">6. Cash Flow Dynamics</h3>
+                <span class="card-score-badge badge-red">3 / 10</span>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill fill-red" style="width: 30%;"></div></div>
+            <div class="measure-statement">Determines real cash generated after adjusting for capital items and infrastructure reinvestments.</div>
+            <div class="metrics-box">Q1 2026 Operating Cash Flow: $2.25B | Q1 2026 Capex: -$2.47B | Q1 Free Cash Flow: -$215M</div>
+            <div class="analysis-text">
+                Reported cash flows are highly complex. In Q1 2026, operating cash flows spiked to $2.25B, driven by large customer pre-payments for multi-year AI compute capacity. However, because capital expenditure requirements reached a massive $2.47B, actual organic Free Cash Flow remained structurally negative, highlighting that the operational model requires constant cash injection to grow.
+            </div>
+            <div class="plain-english-box">
+                📘 <strong>In Plain English:</strong> <strong>Free Cash Flow (FCF)</strong> is the leftover cash a company has after paying for basic operations and buying big physical assets like servers and data centers. Negative FCF means the business spent more cash constructing its infrastructure than it organically brought in from immediate service billings.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div class="card-header-row">
+                <h3 class="card-title">7. Dividend Sustainability</h3>
+                <span class="card-score-badge badge-red">0 / 10</span>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill fill-red" style="width: 0%;"></div></div>
+            <div class="measure-statement">Assesses return payments directly distributed to shareholders from underlying profits.</div>
+            <div class="metrics-box">Dividend Yield: 0.0% | Payout Ratio: 0% | Dividend Growth History: None</div>
+            <div class="analysis-text">
+                Nebius pays no dividend and is unlikely to implement a capital distribution program in the foreseeable future. Every dollar of generated capital and outside funding is structurally allocated toward physical infrastructure expansion and high-performance server acquisition.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div class="card-header-row">
+                <h3 class="card-title">8. Management & Capital Allocation</h3>
+                <span class="card-score-badge badge-yellow">7 / 10</span>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill fill-yellow" style="width: 70%;"></div></div>
+            <div class="measure-statement">Tracks leadership's capital deployment efficiency, including acquisitions and internal reinvestment.</div>
+            <div class="metrics-box">Leadership Core: Arkady Volozh (CEO) | Core M&A: Tavily Acquisition ($400M, Feb 2026)</div>
+            <div class="analysis-text">
+                Management successfully completed a highly complex geopolitical extraction of its primary core intellectual and technological assets out of Russia via the Yandex corporate restructure. However, their post-split deployment strategy is highly aggressive, marked by expensive acquisitions in agentic search architectures (Tavily) alongside concurrent massive site builds in the UK, France, and the US.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div class="card-header-row">
+                <h3 class="card-title">9. Operational Vulnerabilities</h3>
+                <span class="card-score-badge badge-yellow">Risk Factor</span>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill fill-yellow" style="width: 100%;"></div></div>
+            <div class="measure-statement">Identifies core operational, industry, and macroeconomic factors that could pressure performance.</div>
+            <div class="analysis-text" style="font-size: 13.5px; padding-left: 4px;">
+                • <strong>GPU Overcapacity & Demand Cycling:</strong> Billions in capital expenditures are being deployed into hardware assets. If global AI compute demand experiences a mid-cycle correction, Nebius could face high underutilization rates alongside inflexible fixed depreciation burdens.<br><br>
+                • <strong>Extreme Customer Concentration:</strong> Revenue scale relies heavily on executing large, rumored multi-billion dollar compute supply agreements with mega-cap hyperscalers and tier-1 tech buyers. The loss or downward adjustment of a single pilot agreement creates immense downside variance.<br><br>
+                • <strong>Execution Bottlenecks:</strong> Building massive data center hubs (e.g., Birmingham 240MW site, 1.2GW secured site in Pennsylvania) subjects the firm to power grid connection delays, localized environmental regulation shifts, and high global utility cost variability.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div class="card-header-row">
+                <h3 class="card-title">10. Sentiment & Momentum</h3>
+                <span class="card-score-badge badge-yellow">6 / 10</span>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill fill-yellow" style="width: 60%;"></div></div>
+            <div class="measure-statement">Tracks institutional market opinion and backward short-term equity price trends.</div>
+            <div class="metrics-box">Wall Street Consensus: 6 Buys, 4 Holds, 0 Sells | Average Price Target: $235 - $244.07</div>
+            <div class="analysis-text">
+                Nebius maintains extreme upward market momentum, driven by its mid-2026 inclusion into the Nasdaq-100 Index, which triggers mandatory buying from index-tracking passive funds. The backward 1-year total return stands above 400%. Because of this rapid run, the current equity spot price ($286.69) is trading moderately above the average consensus price target set by professional Wall Street research desks.
+            </div>
+        </div>
+
+    </main>
+
+    <section class="summary-banner">
+        <div class="summary-title">Fundamentals Snapshot: 5.7 / 10</div>
+        <div class="summary-desc">“Mixed fundamentals with notable trade-offs”</div>
+        <p style="margin: 8px 0 0 0; font-size: 13px; color: #78350f; max-width:700px; display:inline-block;">
+            <strong>Weighting Rationales:</strong> The overall score is weighted heavily toward structural financial characteristics: <strong>Valuation (20%)</strong>, <strong>Financial Health (20%)</strong>, <strong>Profitability (20%)</strong>, and <strong>Growth (20%)</strong>, with remaining categories capturing operational, management, and sentiment metrics. High forward growth rates and a clean, debt-light balance sheet are balanced by steep premiums, negative free cash flows, and early-stage operating losses.
+        </p>
+    </section>
+
+    <section class="viewpoints-container">
+        
+        <div class="viewpoint-column bull-side">
+            <h4 class="viewpoint-header" style="color: var(--green-solid);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
+                Analytical Perspectives: The Bull Case
+            </h4>
+            <ul class="viewpoint-list">
+                <li><strong>Nvidia Preferred Supply Path:</strong> Strategic investment integration and supply chain backing from Nvidia give Nebius clear, preferred allocation of ultra-scarce next-generation AI processing chips, avoiding the procurement bottlenecks that stall less-connected enterprise rivals.</li>
+                <li><strong>Massive Absolute Growth Trajectory:</strong> Top-line revenue expansion exceeding 600% year-over-year validates strong demand for non-hyperscaler, independent full-stack AI cloud infrastructure platforms.</li>
+                <li><strong>Clean Initial Leverage Profile:</strong> Funding major operations through equity investments and capital asset transitions leaves the current balance sheet without near-term debt risk, allowing maximum operational room to deploy funds into massive field projects.</li>
+                <li><strong>Secured Megawatt Power Pipelines:</strong> Securing significant energy capacity allocations across strategic regions (including up to 1.2 GW in Pennsylvania) acts as a structural asset advantage in an era where data center buildouts face intense electricity constraints.</li>
+            </ul>
+        </div>
+
+        <div class="viewpoint-column bear-side">
+            <h4 class="viewpoint-header" style="color: var(--red-solid);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/></svg>
+                Analytical Perspectives: The Bear Case
+            </h4>
+            <ul class="viewpoint-list">
+                <li><strong>Demanding Multiples Premium:</strong> Trading at a trailing Price-to-Sales multiple near 83x and a forward multiple over 21x means the asset has zero margin for operational error; even minor scaling delays could pressure valuation metrics.</li>
+                <li><strong>Structural Capital Bleed:</strong> The business model demands ongoing capital infusions. True free cash flow is firmly negative because multi-billion dollar hardware spending significantly outpaces actual operating cash generation.</li>
+                <li><strong>Lack of Structural Operating Profitability:</strong> Despite strong gross margin generation at the individual chip cluster level, massive corporate overhead and substantial equipment depreciation continue to drive deep, ongoing operational net losses.</li>
+                <li><strong>Commoditization Risks:</strong> Long-term competitive moats are limited; raw compute and GPU-as-a-Service infrastructure face risk of aggressive pricing pressure if hyperscalers flood the global marketplace with computing power over time.</li>
+            </ul>
+        </div>
+
+    </section>
+
+    <footer class="disclaimer-box">
+        <h5 class="disclaimer-heading">
+            <span>⚠️</span> EDUCATIONAL DISCLOSURE & FINANCIAL CONTENT DISCLAIMER
+        </h5>
+        <p style="margin: 0 0 10px 0; line-height: 1.6;">
+            This document is generated strictly as AI-powered educational content designed to illustrate institutional security analysis frameworks. It is <strong>NOT</strong> financial advice, and it does <strong>NOT</strong> constitute a direct or indirect recommendation, endorsement, solicitation, or offer to buy, sell, or hold any security, commodity, derivative, or financial instrument described herein.
+        </p>
+        <p style="margin: 0 0 10px 0; line-height: 1.6;">
+            The numerical metrics, visual score indicators, and mathematical calculations provided describe the standalone financial and operational characteristics of the company based on historical records and consensus expectations. They must <strong>NEVER</strong> be interpreted as investment quality rankings, price forecasting tools, or buy/sell triggers.
+        </p>
+        <p style="margin: 0 0 10px 0; line-height: 1.6;">
+            This breakdown represents a preliminary analytical starting point for baseline study. It is <strong>NOT</strong> a sufficient foundation upon which to structure an investment thesis. Constructing a complete investment decision requires exhaustive personal due diligence, meticulous independent review of the company's verified regulatory filings (including SEC Forms 20-F, 6-K, and audited balance sheets), and full alignment with your explicit personal risk threshold, timeline constraints, and asset goals.
+        </p>
+        <p style="margin: 0 0 10px 0; line-height: 1.6;">
+            <strong>Historical performance metrics, past trends, and previous corporate restructurings provide no reliable guarantee of future economic results.</strong> Operational patterns change rapidly, and the industry characteristics presented reflect past and current data points that may deviate significantly from actual execution in forward quarters.
+        </p>
+        <p style="margin: 0 0 10px 0; line-height: 1.6;">
+            Data points displayed within this educational text are subject to market delays, missing parameters, or human transcription errors. You must independently cross-verify all primary metrics via official corporate investor relations channels before committing capital. The automated score distributions and summary classifications use general baseline logic models that do not account for specialized tax structures, macroeconomic volatility, or customized portfolio requirements. Always perform your own thorough evaluation and consult a licensed financial professional before making asset decisions.
+        </p>
+    </footer>
+
+</div>
+
+</body>
+</html>

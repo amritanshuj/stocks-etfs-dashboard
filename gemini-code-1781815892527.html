@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equity Research Report: Nebius Group N.V. (NBIS)</title>
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --accent-blue: #2563eb;
+            --accent-blue-light: #eff6ff;
+            --green-solid: #10b981;
+            --green-light: #ecfdf5;
+            --yellow-solid: #f59e0b;
+            --yellow-light: #fffbeb;
+            --red-solid: #ef4444;
+            --red-light: #fef2f2;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.5;
+            margin: 0;
+            padding: 16px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header Dashboard */
+        .dashboard-header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .header-left h1 {
+            margin: 0 0 4px 0;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .ticker-badge {
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+
+        .price-meta {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .price-large {
+            font-size: 32px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 8px 0 0 0;
+        }
+
+        .gauge-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .gauge-svg {
+            width: 120px;
+            height: 120px;
+        }
+
+        .gauge-bg {
+            fill: none;
+            stroke: #334155;
+            stroke-width: 10;
+        }
+
+        .gauge-fill {
+            fill: none;
+            stroke: var(--yellow-solid);
+            stroke-width: 10;
+            stroke-dasharray: 283;
+            stroke-dashoffset: 121.7; /* Reflects 5.7/10 score */
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: center;
+            transition: stroke-dashoffset 1s ease-in-out;
+        }
+
+        .gauge-text {
+            font-size: 22px;
+            font-weight: 700;
+            fill: #ffffff;
+            font-family: sans-serif;
+        }
+
+        .gauge-label {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* Grid Scorecard */
+        .scorecard-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        @media(min-width: 768px) {
+            .scorecard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .score-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .card-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        .card-score-badge {
+            font-size: 14px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .badge-green { color: var(--green-solid); background-color: var(--green-light); }
+        .badge-yellow { color: var(--yellow-solid); background-color: var(--yellow-light); }
+        .badge-red { color: var(--red-solid); background-color: var(--red-light); }
+
+        .progress-bar-bg {
+            background-color: var(--border-color);
+            height: 8px;
+            border-radius: 4px;
+            width: 100%;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .fill-green { background-color: var(--green-solid); }
+        .fill-yellow { background-color: var(--yellow-solid); }
+        .fill-red { background-color: var(--red-solid); }
+
+        .measure-statement {
+            font-style: italic;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .metrics-box {
+            background-color: var(--bg-primary);
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: monospace;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            border-left: 3px solid var(--text-muted);
+        }
+
+        .analysis-text {
+            font-size: 14px;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        /* Callout Boxes */
+        .plain-english-box {
+            background-color: var(--accent-blue-light);
+            border: 1px solid #dbeafe;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #1e40af;
+        }
+
+        .plain-english-box strong {
+            color: #1d4ed8;
+        }
+
+        /* Charts Section */
+        .charts-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        @media(min

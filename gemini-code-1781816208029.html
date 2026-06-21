@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equity Research Report: Applied Optoelectronics (AAOI)</title>
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --accent-blue: #0284c7;
+            --accent-blue-light: #f0f9ff;
+            --green-solid: #16a34a;
+            --green-light: #f0fdf4;
+            --yellow-solid: #ca8a04;
+            --yellow-light: #fefce8;
+            --red-solid: #dc2626;
+            --red-light: #fef2f2;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.5;
+            margin: 0;
+            padding: 16px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header Dashboard */
+        .dashboard-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .header-left h1 {
+            margin: 0 0 4px 0;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .ticker-badge {
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+
+        .price-meta {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .price-large {
+            font-size: 32px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 8px 0 0 0;
+        }
+
+        .gauge-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .gauge-svg {
+            width: 120px;
+            height: 120px;
+        }
+
+        .gauge-bg {
+            fill: none;
+            stroke: #334155;
+            stroke-width: 10;
+        }
+
+        .gauge-fill {
+            fill: none;
+            stroke: var(--yellow-solid);
+            stroke-width: 10;
+            stroke-dasharray: 283;
+            stroke-dashoffset: 127.35; /* Reflects 5.5/10 score */
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: center;
+        }
+
+        .gauge-text {
+            font-size: 22px;
+            font-weight: 700;
+            fill: #ffffff;
+            font-family: sans-serif;
+        }
+
+        .gauge-label {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* Grid Scorecard */
+        .scorecard-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        @media(min-width: 768px) {
+            .scorecard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .score-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        .card-score-badge {
+            font-size: 14px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        .badge-green { color: var(--green-solid); background-color: var(--green-light); }
+        .badge-yellow { color: var(--yellow-solid); background-color: var(--yellow-light); }
+        .badge-red { color: var(--red-solid); background-color: var(--red-light); }
+
+        .progress-bar-bg {
+            background-color: var(--border-color);
+            height: 8px;
+            border-radius: 4px;
+            width: 100%;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .fill-green { background-color: var(--green-solid); }
+        .fill-yellow { background-color: var(--yellow-solid); }
+        .fill-red { background-color: var(--red-solid); }
+
+        .measure-statement {
+            font-style: italic;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .metrics-box {
+            background-color: var(--bg-primary);
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: monospace;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            border-left: 3px solid var(--text-muted);
+        }
+
+        .analysis-text {
+            font-size: 14px;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            flex-grow: 1;
+        }
+
+        /* Callout Boxes */
+        .plain-english-box {
+            background-color: var(--accent-blue-light);
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #0369a1;
+        }
+
+        .plain-english-box strong {
+            color: #0284c7;
+        }
+
+        /* Charts Section */
+        .charts-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        @media(min-width: 900px) {
+            .charts-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .chart-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .chart-card h3 {
+            font-size: 14px;
+            margin: 0 0 16px 0;
+            color: var(--text-muted);
+            text-align: center;
+            width: 100%;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        /* Summary Banner */
+        .summary-banner {
+            background-color: var(--yellow-light);
+            border: 1px solid #fef08a;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .summary-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #854d0e;
+            margin-bottom: 4px;
+        }
+
+        .summary-desc {
+            font-size: 15px;
+            color: #a16207;
+            font-weight: 600;
+        }
+
+        /* Two Column Considerations Section */
+        .viewpoints-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        @media(min-width: 768px) {
+            .viewpoints-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .viewpoint-column {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .viewpoint-column.bull-side { border-top: 4px solid var(--green-solid); }
+        .viewpoint-column.bear-side { border-top: 4px solid var(--red-solid); }
+
+        .viewpoint-header {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .viewpoint-list {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .viewpoint-list li {
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+
+        /* Disclaimer Styling */
+        .disclaimer-box {
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 40px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .disclaimer-heading {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-top: 0;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="dashboard-header">
+        <div class="header-left">
+            <h1>Applied Optoelectronics, Inc. <span class="ticker-badge">NASDAQ: AAOI</span></h1>
+            <div class="price-meta">Data Evaluated: June 2026 | Industry Cohort: Optical Networking & Components</div>
+            <div class="price-large">$161.85 <span style="font-size:14px; font-weight:normal; color:#94a3b8;">USD</span></div>
+        </div>
+        <div class="gauge-container">
+            <svg class="gauge-svg" viewBox="0 0 100 100">
+                <circle class="gauge-bg" cx="50" cy="50" r="45"></circle>
+                <circle class="gauge-fill" cx="50" cy="50" r="45"></circle>
+                <text class="gauge-text" cx="50" cy="55" text-anchor="middle">5.5</text>
+            </svg>
+            <div class="gauge-label">Fundamentals Snapshot<br><span style="color:#ca8a04;">Mixed / Transition Phase</span></div>
+        </div>
+    </header>
+
+    <section class="charts-container">
+        <div class="chart-card">
+            <h3>Annual Revenue Progression ($ Millions)</h3>
+            <svg width="220" height="160" viewBox="0 0 220 160">
+                <line x1="40" y1="120" x2="200" y2="120" stroke="#e2e8f0" stroke-width="1"/>
+                <line x1="40" y1="75" x2="200" y2="75" stroke="#e2e8f0" stroke-dasharray="3" stroke-width="1"/>
+                <line x1="40" y1="30" x2="200" y2="30" stroke="#e2e8f0" stroke-dasharray="3" stroke-width="1"/>
+                
+                <rect x="55" y="111" width="25" height="9" fill="#94a3b8"/>
+                <text x="67.5" y="135" font-size="10" text-anchor="middle" fill="#475569">2024</text>
+                <text x="67.5" y="105" font-size="9" text-anchor="middle" font-weight="600">$100.3</text>
+                
+                <rect x="105" y="80" width="25" height="40" fill="#0284c7"/>
+                <text x="117.5" y="135" font-size="10" text-anchor="middle" fill="#475569">2025</text>
+                <text x="117.5" y="74" font-size="9" text-anchor="middle" font-weight="600">$455.7</text>
+                
+                <rect x="155" y="30" width="25" height="90" fill="#0369a1"/>
+                <text x="167.5" y="135" font-size="10" text-anchor="middle" fill="#475569">2026E</text>
+                <text x="167.5" y="24" font-size="9" text-anchor="middle" font-weight="600" fill="#0369a1">$1,030.0</text>
+                
+                <line x1="40" y1="120" x2="200" y2="120" stroke="#475569" stroke-width="1.5"/>
+            </svg>
+        </div>
+
+        <div class="chart-card">
+            <h3>Q1 2026 Profitability Mismatch</h3>
+            <svg width="220" height="160" viewBox="0 0 220 160">
+                <rect x="40" y="35" width="45" height="85" fill="#ca8a04" rx="2"/>
+                <text x="62.5" y="75" font-size="12" font-weight="700" fill="white" text-anchor="middle">29.1%</text>
+                <text x="62.5" y="135" font-size="10" text-anchor="middle" fill="#475569" font-weight="600">Gross Margin</text>
+                
+                <rect x="135" y="120" width="45" height="15" fill="#dc2626" rx="2"/>
+                <text x="157.5" y="148" font-size="10" text-anchor="middle" fill="#475569" font-weight="600">Operating Mgn</text>
+                <text x="157.5" y="114" font-size="11" font-weight="700" fill="#dc2626" text-anchor="middle">-8.6%</text>
+                
+                <line x1="20" y1="120" x2="200" y2="120" stroke="#475569" stroke-width="1"/>
+            </svg>
+        </div>
+
+        <div class="chart-card">
+            <h3>Forward Price-to-Sales (P/S) Comparison</h3>
+            <svg width="220" height="160" viewBox="0 0 220 160">
+                <line x1="80" y1="40" x2="200" y2="40" stroke="#e2e8f0" stroke-width="1"/>
+                <line x1="80" y1="80" x2="200" y2="80" stroke="#e2e8f0" stroke-width="1"/>
+                <line x1="80" y1="120" x2="200" y2="120" stroke="#e2e8f0" stroke-width="1"/>
+                
+                <text x="70" y="45" font-size="10" text-anchor="end" font-weight="600">AAOI (2026E)</text>
+                <rect x="80" y="35" width="105" height="12" fill="#dc2626"/>
+                <text x="190" y="45" font-size="10" font-weight="700">12.6x</text>
+
+                <text x="70" y="85" font-size="10" text-anchor="end">Hardware Avg</text>
+                <rect x="80" y="75" width="30" height="12" fill="#ca8a04"/>
+                <text x="115" y="85" font-size="10">3.6x</text>
+
+                <text x="70" y="125" font-size="10" text-anchor="end">AAOI 5-Yr Avg</text>
+                <rect x="80" y="115" width="18" height="12" fill="#94a3b8"/>
+                <text x="105" y="125" font-size="10">2.1x</text>
+                
+                <line x1="80" y1="20" x2="80" y2="140" stroke="#475569" stroke-width="1.5"/>
+            </svg>
+        </div>
+    </section>
+
+    <main class="scorecard-grid">
+
+        <div class="score-card">
+            <div>
+                <div class="card-header-row">
+                    <h3 class="card-title">1. Business Model & Moat</h3>
+                    <span class="card-score-badge badge-yellow">4.5 / 10</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill fill-yellow" style="width: 45%;"></div></div>
+                <div class="measure-statement">Measures what the company does, how it makes money, and its structural competitive advantages.</div>
+                <div class="metrics-box">Core Segments: Data Center (56% of Q4) | Products: 400G & 800G Transceivers, CATV Broadband Equipment</div>
+            </div>
+            <div class="analysis-text">
+                Applied Optoelectronics designs and manufactures advanced fiber-optic networking components. While it is experiencing strong tailwinds from the AI infrastructure cycle as data centers upgrade to high-speed optical transceivers, the company historically operates in a cyclical, capital-intensive hardware space. Structural barriers to entry are moderate, and switching costs remain low, meaning competitive differentiation depends heavily on maintaining top technical component performance.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div>
+                <div class="card-header-row">
+                    <h3 class="card-title">2. Valuation Multiples</h3>
+                    <span class="card-score-badge badge-red">2.0 / 10</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill fill-red" style="width: 20%;"></div></div>
+                <div class="measure-statement">Measures if the share price is cheap or expensive relative to core fundamentals and peer history.</div>
+                <div class="metrics-box">Trailing P/S: ~25.6x | Forward P/S: ~12.6x | Forward P/E (2026E): ~181.8x</div>
+            </div>
+            <div class="analysis-text">
+                The market prices the company at a premium relative to its historical metrics and broader hardware indices. AAOI's five-year average historical Price-to-Sales multiple has hovered under 3.0x. Today's compressed forward multiples price in near-perfect execution of a multi-year optical technology "supercycle," placing valuation metrics at the absolute high end of its peer group.
+            </div>
+            <div class="plain-english-box">
+                📘 <strong>In Plain English:</strong> The <strong>Price-to-Sales (P/S) Ratio</strong> compares the entire valuation of a company to its total revenue. A forward P/S of 12.6x implies that for every $1.00 of revenue the company is expected to make next year, investors are paying $12.60 upfront, indicating high embedded expectations.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div>
+                <div class="card-header-row">
+                    <h3 class="card-title">3. Profitability Profile</h3>
+                    <span class="card-score-badge badge-red">3.0 / 10</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill fill-red" style="width: 30%;"></div></div>
+                <div class="measure-statement">Evaluates cost efficiency in converting revenue into net operating income and returns on capital.</div>
+                <div class="metrics-box">Q1 2026 Gross Margin: 29.14% | Operating Margin: -8.6% | TTM Net EPS: -$0.66</div>
+            </div>
+            <div class="analysis-text">
+                AAOI demonstrates an operational mismatch. While manufacturing improvements and higher-value product mixes pushed gross margins to roughly 29% in the latest quarter, elevated operating overhead remains a constraint. High research and development spending ($25.66M) alongside selling, general, and administrative costs ($31.25M) led to an operating loss of $12.99M in Q1 2026, keeping net returns on equity and invested capital in negative territory.
+            </div>
+            <div class="plain-english-box">
+                📘 <strong>In Plain English:</strong> <strong>Operating Margin</strong> reveals the percentage of profit left over after paying for variable costs of production like raw materials and wages, plus regular operational overhead. A negative operating margin indicates that the company is currently losing money on its baseline business activities before taxes and interest are even calculated.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div>
+                <div class="card-header-row">
+                    <h3 class="card-title">4. Growth Velocity</h3>
+                    <span class="card-score-badge badge-green">9.0 / 10</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill fill-green" style="width: 90%;"></div></div>
+                <div class="measure-statement">Evaluates the expansion speed of revenues and earnings over historical and forward-looking periods.</div>
+                <div class="metrics-box">Q1 2026 Revenue: $151.14M (+51.4% YoY) | FY26 Consensus Revenue: ~$1.03B (+126%)</div>
+            </div>
+            <div class="analysis-text">
+                Top-line growth has accelerated rapidly. After fluctuating downcycles between 2021 and 2024, revenues surged in late 2025 and reached $151.14M in Q1 2026. Forward consensus forecasts indicate an aggressive scaling curve, with full-year revenue projected to break past $1 billion for the first time by the end of 2026, alongside consensus projections that earnings per share will pivot into positive territory at $0.89.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div>
+                <div class="card-header-row">
+                    <h3 class="card-title">5. Balance Sheet & Financial Health</h3>
+                    <span class="card-score-badge badge-green">8.0 / 10</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill fill-green" style="width: 80%;"></div></div>
+                <div class="measure-statement">Measures the firm's long-term leverage position and near-term structural liquidity.</div>
+                <div class="metrics-box">Current Ratio: 3.83 | Debt-to-Equity Ratio: 0.22 | Long-Term Debt: ~$200M</div>
+            </div>
+            <div class="analysis-text">
+                The balance sheet exhibits a stable liquid structure. Short-term resources provide a solid safety cushion, as indicated by a current ratio of 3.83, meaning short-term assets comfortably exceed immediate commitments. Institutional long-term debt has risen to approximately $200M, yet remains sustainable relative to total asset equity allocations.
+            </div>
+            <div class="plain-english-box">
+                📘 <strong>In Plain English:</strong> The <strong>Current Ratio</strong> tests whether a firm has enough short-term financial strength to pay its immediate bills due within a year. A ratio of 3.83 means the company owns $3.83 in highly liquid cash, inventory, and receivables for every $1.00 it owes in short-term liabilities.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div>
+                <div class="card-header-row">
+                    <h3 class="card-title">6. Cash Flow Dynamics</h3>
+                    <span class="card-score-badge badge-red">3.0 / 10</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill fill-red" style="width: 30%;"></div></div>
+                <div class="measure-statement">Determines actual disposable cash generated after accounting for manufacturing expenditures.</div>
+                <div class="metrics-box">Free Cash Flow: Negative | Operating Cash Flow: Negative (Working Capital Drain)</div>
+            </div>
+            <div class="analysis-text">
+                AAOI's reported accounting losses translate directly into cash flow constraints. Free cash flow remains in negative territory because the business requires substantial ongoing capital expenditures to re-tool its cleanrooms and expand factory capacity. Concurrently, rapid revenue scaling forces cash absorption into rising raw component inventory and accounts receivable balances.
+            </div>
+            <div class="plain-english-box">
+                📘 <strong>In Plain English:</strong> <strong>Free Cash Flow</strong> represents the actual physical cash a business keeps after funding all operations and paying for necessary equipment upgrades. When this figure is negative, the company must rely on existing cash reserves, share dilution, or debt issuance to stay funded.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div>
+                <div class="card-header-row">
+                    <h3 class="card-title">7. Dividend Sustainability</h3>
+                    <span class="card-score-badge badge-red">0.0 / 10</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill fill-red" style="width: 0%;"></div></div>
+                <div class="measure-statement">Assesses recurring cash distributions paid out directly back to equity investors.</div>
+                <div class="metrics-box">Dividend Yield: 0.0% | Payout Ratio: 0% | Dividend Streak: 0 Years</div>
+            </div>
+            <div class="analysis-text">
+                Applied Optoelectronics does not pay a cash dividend. Given the company's historical net losses and the large amount of capital required to sustain manufacturing capacity in the high-speed transceiver segment, capital deployment is entirely directed toward internal engineering and cash preservation.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div>
+                <div class="card-header-row">
+                    <h3 class="card-title">8. Management & Capital Allocation</h3>
+                    <span class="card-score-badge badge-yellow">5.5 / 10</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill fill-yellow" style="width: 55%;"></div></div>
+                <div class="measure-statement">Tracks leadership's capital deployment record, inside alignment, and asset execution.</div>
+                <div class="metrics-box">CEO: Dr. Thompson Lin | Recent Inside Activity: Notable Sales Approaching ~$10M</div>
+            </div>
+            <div class="analysis-text">
+                Management has successfully pivoted its strategic roadmap away from legacy legacy product lines toward higher-speed 400G and 800G optical segments to address current infrastructure trends. However, long-term capital efficiency metrics show mixed results due to past downcycles. Furthermore, recent notable insider stock liquidations introduce a factor that warrants ongoing observation regarding management alignment.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div>
+                <div class="card-header-row">
+                    <h3 class="card-title">9. Operational Risks</h3>
+                    <span class="card-score-badge badge-yellow">Risk Factor</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill fill-yellow" style="width: 100%;"></div></div>
+                <div class="measure-statement">Identifies core industrial vulnerabilities that could disrupt operational performance.</div>
+            </div>
+            <div class="analysis-text" style="font-size: 13.5px;">
+                • <strong>Severe Customer Concentration:</strong> A substantial portion of data center optical shipments relies on a small handful of large hyperscale buyers. The loss of a single customer profile or an unannounced shift in component allocation could significantly impact metrics.<br><br>
+                • <strong>Rapid Technological Cycles:</strong> The industry moves quickly from 400G/800G specifications to next-generation 1.6T transceiver form factors. Execution delays or firmware optimization logjams could render existing manufacturing inventories obsolete.<br><br>
+                • <strong>High Fixed Overhead Leverage:</strong> Maintaining dedicated manufacturing cleanrooms introduces substantial fixed production overhead costs. A modest drop in overall capacity utilization can lead to sudden compression of gross margins.
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div>
+                <div class="card-header-row">
+                    <h3 class="card-title">10. Sentiment & Momentum</h3>
+                    <span class="card-score-badge badge-green">7.0 / 10</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill fill-green" style="width: 70%;"></div></div>
+                <div class="measure-statement">Tracks institutional market views and recent backward stock price velocity.</div>
+                <div class="metrics-box">Consensus: Strong Buy (75% Buy / 25% Neutral) | 52-Week Range: $18.50 - $233.67</div>
+            </div>
+            <div class="analysis-text">
+                AAOI demonstrates exceptionally high price velocity, surging more than 1,000% from its 52-week low of $18.50 up to high-water marks near $233.67 before consolidating around its current level of $161.85. Wall Street consensus opinion skews optimistic with zero active sell recommendations, though the company's rapid market appreciation places the current price above historical mid-point consensus price targets.
+            </div>
+        </div>
+
+    </main>
+
+    <section class="summary-banner">
+        <div class="summary-title">Fundamentals Snapshot: 5.5 / 10</div>
+        <div class="summary-desc">“Mixed fundamentals with notable trade-offs”</div>
+        <p style="margin: 8px 0 0 0; font-size: 13px; color: #713f12; max-width:750px; display:inline-block;">
+            <strong>Weighting Methodology:</strong> This baseline structural profile weights the core columns of <strong>Valuation (25%)</strong>, <strong>Financial Health (25%)</strong>, <strong>Profitability (25%)</strong>, and <strong>Growth (25%)</strong> equally. Strong forward growth metrics and a clean liquidity profile are balanced by elevated structural multiples and current negative operational profit margins.
+        </p>
+    </section>
+
+    <section class="viewpoints-container">
+        
+        <div class="viewpoint-column bull-side">
+            <h4 class="viewpoint-header" style="color: var(--green-solid);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
+                Analytical Perspectives: The Bull Case
+            </h4>
+            <ul class="viewpoint-list">
+                <li><strong>AI Infrastructure Tailwinds:</strong> The rapid buildout of next-generation machine learning data centers drives strong demand for high-speed 400G and 800G optical components to mitigate bandwidth bottlenecks.</li>
+                <li><strong>Significant Revenue Acceleration:</strong> Projected full-year revenue expansion breaking past the $1 billion threshold demonstrates that the firm is growing its market footprint during this upgrade cycle.</li>
+                <li><strong>Favorable Product Mix Shift:</strong> Transitioning toward high-end transceiver models helps improve historical gross margins, offering potential path toward operational scale if overhead remains contained.</li>
+                <li><strong>Solid Near-Term Cash Protection:</strong> A current ratio of 3.83 ensures that the company possesses adequate short-term resources to fund its manufacturing lines without immediate liquidity concerns.</li>
+            </ul>
+        </div>
+
+        <div class="viewpoint-column bear-side">
+            <h4 class="viewpoint-header" style="color: var(--red-solid);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/></svg>
+                Analytical Perspectives: The Bear Case
+            </h4>
+            <ul class="viewpoint-list">
+                <li><strong>Demanding Growth Multiples:</strong> Trading at a forward P/S ratio of 12.6x means the equity is pricing in highly optimistic long-term market expansion, leaving little cushion for operational execution errors.</li>
+                <li><strong>Absence of Operating Net Profits:</strong> Despite higher revenues, high structural R&D and operational costs continue to result in negative GAAP operating margins and losses.</li>
+                <li><strong>Ongoing Capital Resource Drain:</strong> Negative free cash flow indicates that the company must continually spend cash to re-tool manufacturing lines, which may restrict strategic flexibility.</li>
+                <li><strong>Vulnerability to Large Customers:</strong> Relying on a small number of core hyperscale internet platforms leaves the company vulnerable to sudden shifts in design requirements or contract allocations.</li>
+            </ul>
+        </div>
+
+    </section>
+
+    <footer class="disclaimer-box">
+        <h5 class="disclaimer-heading">
+            <span>⚠️</span> EDUCATIONAL DISCLOSURE & ANALYSIS DISCLAIMER
+        </h5>
+        <p style="margin: 0 0 10px 0; line-height: 1.6;">
+            This analysis is strictly AI-generated educational content intended to illustrate financial analysis methodologies. It does <strong>NOT</strong> constitute financial advice, an investment recommendation, or an endorsement to buy, sell, or hold any security or financial asset.
+        </p>
+        <p style="margin: 0 0 10px 0; line-height: 1.6;">
+            The scores assigned reflect the strength of specific, measurable financial characteristics derived from public records. They are <strong>NOT</strong> a rating of whether the stock is an attractive purchase and should never be interpreted as a buy or sell signal.
+        </p>
+        <p style="margin: 0 0 10px 0; line-height: 1.6;">
+            This breakdown should <strong>ONLY</strong> be used as a preliminary starting point for your own research. It is not a complete or sufficient analysis on its own to support an investment thesis. A full investment decision requires deeper due diligence, reading the company's verified regulatory filings (including its Forms 10-K and 10-Q), and careful consideration of your personal financial situation, risk tolerance, and time horizon.
+        </p>
+        <p style="margin: 0 0 10px 0; line-height: 1.6;">
+            Historical and past financial performance is <strong>NOT</strong> indicative of future investment results. The trends and numbers shown reflect past conditions and carry no guarantee of future operational performance.
+        </p>
+        <p style="margin: 0 0 10px 0; line-height: 1.6;">
+            The underlying data points may be delayed, incomplete, or inaccurate. Investors must always verify current stock prices and financial disclosures from primary financial sources before making market decisions. Scores and summaries are simplified baseline models based on explicit weighting assumptions that may not match your individual goals. Always do your own research and consult a licensed financial advisor before allocating capital to any security.
+        </p>
+    </footer>
+
+</div>
+
+</body>
+</html>

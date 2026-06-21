@@ -105,7 +105,20 @@
     .wrap{padding:0 15px}
     .hero h1{font-size:26px}.toc-grid{grid-template-columns:1fr}.grid2,.grid3{grid-template-columns:1fr}
     .ch{padding:18px 16px}
-    .atable{display:block;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}
+    /* data tables reflow into stacked cards — no sideways scroll */
+    table.dt,table.dt tbody,table.dt tr,table.dt td{display:block;width:auto}
+    table.dt thead{display:none}
+    table.dt tr{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:9px 0}
+    table.dt td{padding:2px 0!important;border:none!important;text-align:left!important;white-space:normal}
+    table.dt td:first-child{font-weight:700;font-size:14px;margin-bottom:5px;padding-bottom:7px!important;border-bottom:1px solid var(--line)!important}
+    table.dt td:not(:first-child){color:#c4d0de}
+    table.dt td:not(:first-child)::before{color:var(--mut2);font-family:var(--mono);font-size:10.5px;letter-spacing:.4px;margin-right:6px;text-transform:uppercase}
+    table.dt:not(.cluster) td:nth-child(2)::before{content:"Rate"}
+    table.dt:not(.cluster) td:nth-child(3)::before{content:"2023→27"}
+    table.dt.cluster td:nth-child(2)::before{content:"OOM vs GPT-4"}
+    table.dt.cluster td:nth-child(3)::before{content:"H100-equiv"}
+    table.dt.cluster td:nth-child(4)::before{content:"Cluster cost"}
+    table.dt.cluster td:nth-child(5)::before{content:"Power draw"}
   }
   @media(max-width:430px){
     .hero h1{font-size:22px}
@@ -203,7 +216,7 @@
     <h2>Racing to the Trillion-Dollar Cluster</h2>
     <p class="one">The most extraordinary techno-capital acceleration in history is underway — and power is the binding constraint.</p>
     <p>Here the abstraction becomes concrete steel and gigawatts. Aschenbrenner projects the training cluster scaling curve forward and the numbers are staggering. Total annual AI investment marches from <b>~$150B toward an ~$8T cumulative buildout</b> by decade's end, and individual training clusters climb roughly an OOM every two years:</p>
-    <table class="dt">
+    <table class="dt cluster">
       <thead><tr><th class="l">Year</th><th>OOM vs GPT-4</th><th>H100-equiv.</th><th>Cluster cost</th><th>Power draw</th></tr></thead>
       <tbody>
         <tr><td class="l mono">2024</td><td class="mono acc">+1</td><td>~100k</td><td class="mono">~$ billions</td><td class="mono gold">~10–100 MW</td></tr>

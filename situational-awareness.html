@@ -102,17 +102,20 @@
   footer .d{max-width:760px;margin:0 auto 8px}
 
   @media(max-width:760px){
+    body{overflow-x:clip}
     .wrap{padding:0 15px}
-    .hero h1{font-size:26px}.toc-grid{grid-template-columns:1fr}.grid2,.grid3{grid-template-columns:1fr}
-    .ch{padding:18px 16px}
+    .hero h1{font-size:25px;letter-spacing:-.4px}.hero p{font-size:13.5px}
+    .toc-grid{grid-template-columns:1fr}.grid2,.grid3{grid-template-columns:1fr}
+    .ch{padding:17px 15px} .ch h2{font-size:20px} .ch p,.ch li{font-size:13.8px;overflow-wrap:break-word}
+    .sec-label{font-size:10.5px;letter-spacing:1.1px}
     /* data tables reflow into stacked cards — no sideways scroll */
-    table.dt,table.dt tbody,table.dt tr,table.dt td{display:block;width:auto}
+    table.dt,table.dt tbody,table.dt tr,table.dt td{display:block!important;width:auto!important}
     table.dt thead{display:none}
-    table.dt tr{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:9px 0}
-    table.dt td{padding:2px 0!important;border:none!important;text-align:left!important;white-space:normal}
-    table.dt td:first-child{font-weight:700;font-size:14px;margin-bottom:5px;padding-bottom:7px!important;border-bottom:1px solid var(--line)!important}
-    table.dt td:not(:first-child){color:#c4d0de}
-    table.dt td:not(:first-child)::before{color:var(--mut2);font-family:var(--mono);font-size:10.5px;letter-spacing:.4px;margin-right:6px;text-transform:uppercase}
+    table.dt tr{background:var(--bg2);border:1px solid var(--line);border-radius:11px;padding:12px 14px;margin:10px 0}
+    table.dt td{padding:0!important;border:none!important;text-align:left!important;white-space:normal!important;overflow-wrap:break-word}
+    table.dt td:first-child{font-weight:700;font-size:14.5px;margin-bottom:7px;padding-bottom:8px!important;border-bottom:1px solid var(--line)!important}
+    table.dt td:not(:first-child){display:flex!important;justify-content:space-between;align-items:baseline;gap:12px;margin-top:6px;font-size:13px;color:#c4d0de}
+    table.dt td:not(:first-child)::before{color:var(--mut2);font-family:var(--mono);font-size:10px;letter-spacing:.5px;text-transform:uppercase;flex:none}
     table.dt:not(.cluster) td:nth-child(2)::before{content:"Rate"}
     table.dt:not(.cluster) td:nth-child(3)::before{content:"2023→27"}
     table.dt.cluster td:nth-child(2)::before{content:"OOM vs GPT-4"}
@@ -121,8 +124,9 @@
     table.dt.cluster td:nth-child(5)::before{content:"Power draw"}
   }
   @media(max-width:430px){
+    .wrap{padding:0 13px}
     .hero h1{font-size:22px}
-    .ch{padding:15px 14px}
+    .ch{padding:14px 13px} .ch h2{font-size:18px}
   }
   ::-webkit-scrollbar{height:10px;width:10px}
   ::-webkit-scrollbar-thumb{background:var(--line2);border-radius:5px}

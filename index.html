@@ -151,7 +151,7 @@
     .sleeve{padding:13px 14px} .sleeve-t{font-size:14.5px} .sleeve-d{font-size:12.5px}
     .totalbar{font-size:12px;padding:12px 14px;gap:9px}
     /* allocation tables reflow into stacked cards — no sideways scroll */
-    .atable,.atable tbody,.atable tr,.atable td{display:block!important;width:auto!important}
+    .atable,.atable tbody,.atable tr,.atable td{display:block!important;width:auto!important;min-width:0!important}
     .atable thead{display:none}
     .atable tr{background:var(--bg2);border:1px solid var(--line);border-radius:11px;padding:12px 14px;margin:10px 0}
     .atable td{padding:0!important;border:none!important;text-align:left!important;white-space:normal!important;overflow-wrap:break-word}
@@ -159,19 +159,25 @@
     /* labeled key/value rows */
     .atable td:not(:first-child){display:flex!important;justify-content:space-between;align-items:baseline;gap:12px;margin-top:6px;font-size:13px}
     .atable td:not(:first-child)::before{color:var(--mut2);font-family:var(--mono);font-size:10px;letter-spacing:.5px;text-transform:uppercase;flex:none}
-    .atable:not(.rej) td:nth-child(2)::before{content:"Weight"}
-    .atable:not(.rej) td:nth-child(3)::before{content:"₹ of 10L"}
-    .atable:not(.rej) td:nth-child(4)::before{content:"Score"}
-    .atable:not(.rej) td:nth-child(5)::before{content:"Signal"}
+    /* sleeve allocation tables (Asset|Weight|₹|Score|Signal) */
+    .atable:not(.rej):not(.roadmap) td:nth-child(2)::before{content:"Weight"}
+    .atable:not(.rej):not(.roadmap) td:nth-child(3)::before{content:"₹ of 10L"}
+    .atable:not(.rej):not(.roadmap) td:nth-child(4)::before{content:"Score"}
+    .atable:not(.rej):not(.roadmap) td:nth-child(5)::before{content:"Signal"}
     .atable.rej td:nth-child(2)::before{content:"Weight"}
     /* reason column: full-width block, not a flex row */
     .atable.rej td:nth-child(3){display:block!important;color:var(--mut);font-size:12.3px;line-height:1.55;margin-top:8px}
     .atable.rej td:nth-child(3)::before{content:"Why excluded";display:block;color:var(--mut2);font-family:var(--mono);font-size:10px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:3px}
+    /* roadmap table (Year|OOMs|H100-equiv|Cluster cost|Power) */
+    .atable.roadmap td:nth-child(2)::before{content:"OOMs vs GPT-4"}
+    .atable.roadmap td:nth-child(3)::before{content:"H100-equiv"}
+    .atable.roadmap td:nth-child(4)::before{content:"Cluster cost"}
+    .atable.roadmap td:nth-child(5)::before{content:"Power"}
 
     /* main rankings table → stacked cards (kills the 1080px min-width scroll) */
     .tablewrap{border:none;background:none;border-radius:0;overflow:visible}
     .scroll{overflow:visible}
-    .scroll table{min-width:0;width:100%}
+    .scroll table{min-width:0!important;width:100%}
     .scroll thead{display:none}
     .scroll tbody{display:block}
     .scroll td{padding:0!important;border:none!important;text-align:left!important;white-space:normal!important}
@@ -596,7 +602,7 @@
 <h3>1 · Thematic thesis mapping — Aschenbrenner's "Situational Awareness"</h3>
 <p>The framework decomposes AI progress into three <b>multiplicative OOM drivers</b>: raw <b>compute</b> (~0.5 OOM/yr), <b>algorithmic efficiency</b> (~0.5 OOM/yr), and <b>"unhobbling"</b> (agents, tools, reasoning — step-changes worth 5–30×). Stacked, they imply ~5 more OOMs of effective compute by end-2027 — a GPT-2→GPT-4-sized leap <i>every couple of years</i>, on straight-line extrapolation. The investable consequence is not "which model wins" but <b>who supplies the physical scaffolding of a 100,000× scale-up.</b></p>
 <p>The roadmap forces the constraint ranking. Training clusters march from ~1&nbsp;GW today toward <b>~100&nbsp;GW and $1&nbsp;trillion+ by 2030</b> — north of 20% of total US electricity generation, which has grown barely 5% in a decade:</p>
-<table class="atable"><thead><tr><th>Year</th><th>OOMs vs GPT-4</th><th>H100-equiv.</th><th>Cluster cost</th><th>Power</th></tr></thead><tbody><tr><td style='font-family:var(--mono)'>2024</td><td style='font-family:var(--mono);color:var(--accent2)'>+1</td><td>~100k</td><td>$ billions</td><td style='font-family:var(--mono);color:var(--gold);font-weight:700'>~100 MW</td></tr><tr><td style='font-family:var(--mono)'>2026</td><td style='font-family:var(--mono);color:var(--accent2)'>+2</td><td>~1 million</td><td>$10s B</td><td style='font-family:var(--mono);color:var(--gold);font-weight:700'>~1 GW</td></tr><tr><td style='font-family:var(--mono)'>2028</td><td style='font-family:var(--mono);color:var(--accent2)'>+3</td><td>~10 million</td><td>$100s B</td><td style='font-family:var(--mono);color:var(--gold);font-weight:700'>~10 GW</td></tr><tr><td style='font-family:var(--mono)'>2030</td><td style='font-family:var(--mono);color:var(--accent2)'>+4</td><td>~100 million</td><td>$1 trillion+</td><td style='font-family:var(--mono);color:var(--gold);font-weight:700'>~100 GW</td></tr></tbody></table>
+<table class="atable roadmap"><thead><tr><th>Year</th><th>OOMs vs GPT-4</th><th>H100-equiv.</th><th>Cluster cost</th><th>Power</th></tr></thead><tbody><tr><td style='font-family:var(--mono)'>2024</td><td style='font-family:var(--mono);color:var(--accent2)'>+1</td><td>~100k</td><td>$ billions</td><td style='font-family:var(--mono);color:var(--gold);font-weight:700'>~100 MW</td></tr><tr><td style='font-family:var(--mono)'>2026</td><td style='font-family:var(--mono);color:var(--accent2)'>+2</td><td>~1 million</td><td>$10s B</td><td style='font-family:var(--mono);color:var(--gold);font-weight:700'>~1 GW</td></tr><tr><td style='font-family:var(--mono)'>2028</td><td style='font-family:var(--mono);color:var(--accent2)'>+3</td><td>~10 million</td><td>$100s B</td><td style='font-family:var(--mono);color:var(--gold);font-weight:700'>~10 GW</td></tr><tr><td style='font-family:var(--mono)'>2030</td><td style='font-family:var(--mono);color:var(--accent2)'>+4</td><td>~100 million</td><td>$1 trillion+</td><td style='font-family:var(--mono);color:var(--gold);font-weight:700'>~100 GW</td></tr></tbody></table>
 <p style="margin-top:14px"><b>The shift this encodes:</b> GPUs are <i>not</i> the late-decade gating factor — <b>power is</b>, then datacenter construction/permitting and advanced packaging (CoWoS/HBM), with raw wafers a manageable third. As clusters run flat-out 24/7, the binding question becomes <i>"where do I find 10 gigawatts?"</i> — and the bandwidth to wire 100k+ GPUs into one coherent fabric. That is why this portfolio rotates capital <b>out of crowded compute and into power, thermal, and optical interconnect.</b></p>
 
 <h3>2 · The author is trading his own thesis — Situational Awareness LP 13F</h3>
